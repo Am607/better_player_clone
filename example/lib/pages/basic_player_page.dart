@@ -43,7 +43,11 @@ class _BasicPlayerPageState extends State<BasicPlayerPage> {
             future: Utils.getFileUrl(Constants.fileTestVideoUrl),
             builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
               if (snapshot.data != null) {
-                return BetterPlayer.file(snapshot.data!);
+                return BetterPlayer.network(
+                  'https://d357lqen3ahf81.cloudfront.net/transcoded/Af34Dm2h4M5/video.m3u8',
+                  betterPlayerConfiguration: BetterPlayerConfiguration(
+                      controlsConfiguration: BetterPlayerControlsConfiguration()),
+                );
               } else {
                 return const SizedBox();
               }
