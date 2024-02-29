@@ -533,21 +533,27 @@ class _BetterPlayerCupertinoControlsState
   ) {
     return InkWell(
       onTap: _onPlayPause,
-      child: Container(
-        decoration: BoxDecoration(
-          shape: BoxShape.circle,
-          color: const Color(0x33263047),
-          // color: Colors.white.withOpacity(.8),
-        ),
-        padding: EdgeInsets.fromLTRB(11, 11, 7, 11),
-        margin: const EdgeInsets.symmetric(
-          horizontal: 20,
-          vertical: 20,
-        ),
-        child: SvgPicture.asset(
-          controller.value.isPlaying ? PlayerImages.pause : PlayerImages.play,
-          width: 24,
-          height: 24,
+      child: SizedBox(
+        width: 82,
+        height: 82,
+        child: Container(
+          decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            color: const Color(0x33263047),
+            // color: Colors.white.withOpacity(.8),
+          ),
+          padding: controller.value.isPlaying
+              ? EdgeInsets.fromLTRB(11, 11, 11, 11)
+              : EdgeInsets.fromLTRB(11, 11, 7, 11),
+          margin: const EdgeInsets.symmetric(
+            horizontal: 20,
+            vertical: 20,
+          ),
+          child: SvgPicture.asset(
+            controller.value.isPlaying ? PlayerImages.pause : PlayerImages.play,
+            width: 24,
+            height: 24,
+          ),
         ),
       ),
     );
