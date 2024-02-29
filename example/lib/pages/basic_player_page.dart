@@ -9,21 +9,23 @@ class BasicPlayerPage extends StatefulWidget {
 }
 
 class _BasicPlayerPageState extends State<BasicPlayerPage> {
-  BetterPlayerController? _controller;
-  late BetterPlayerDataSource _betterPlayerDataSource;
+  // BetterPlayerController? _controller;
+  // late BetterPlayerDataSource _betterPlayerDataSource;
 
-  @override
-  void initState() {
-    _betterPlayerDataSource = BetterPlayerDataSource(
-      BetterPlayerDataSourceType.network,
-      'https://d357lqen3ahf81.cloudfront.net/transcoded/Af34Dm2h4M5/video.m3u8',
-      cacheConfiguration: const BetterPlayerCacheConfiguration(useCache: true),
-      bufferingConfiguration: const BetterPlayerBufferingConfiguration(maxBufferMs: 3000, minBufferMs: 1000),
-    );
+  // @override
+  // void initState() {
+  //   _betterPlayerDataSource = BetterPlayerDataSource(
+  //     BetterPlayerDataSourceType.network,
+  //     'https://d357lqen3ahf81.cloudfront.net/transcoded/7EsHghnDzbx/video.m3u8',
+  //     cacheConfiguration: const BetterPlayerCacheConfiguration(useCache: true),
+  //     bufferingConfiguration: const BetterPlayerBufferingConfiguration(
+  //         maxBufferMs: 3000, minBufferMs: 1000),
+  //   );
 
-    _controller = BetterPlayerController(BetterPlayerConfiguration(autoPlay: true),
-        betterPlayerDataSource: _betterPlayerDataSource);
-  }
+  //   _controller = BetterPlayerController(
+  //       BetterPlayerConfiguration(autoPlay: true),
+  //       betterPlayerDataSource: _betterPlayerDataSource);
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -41,12 +43,12 @@ class _BasicPlayerPageState extends State<BasicPlayerPage> {
               style: TextStyle(fontSize: 16),
             ),
           ),
-          // AspectRatio(
-          //   aspectRatio: 16 / 9,
-          //   child: BetterPlayer.network(
-          //     Constants.forBiggerBlazesUrl,
-          //   ),
-          // ),
+          AspectRatio(
+            aspectRatio: 16 / 9,
+            child: BetterPlayer.network(
+              'https://d357lqen3ahf81.cloudfront.net/transcoded/7EsHghnDzbx/video.m3u8',
+            ),
+          ),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16),
             child: Text(
@@ -55,23 +57,21 @@ class _BasicPlayerPageState extends State<BasicPlayerPage> {
             ),
           ),
           const SizedBox(height: 8),
-          FutureBuilder<String>(
-            future: Utils.getFileUrl(Constants.fileTestVideoUrl),
-            builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
-              if (snapshot.data != null) {
-                return BetterPlayer(
-                  controller: _controller!,
-                );
-              } else {
-                return const SizedBox();
-              }
-            },
-          ),
-
+          // FutureBuilder<String>(
+          //   future: Utils.getFileUrl(Constants.fileTestVideoUrl),
+          //   builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
+          //     if (snapshot.data != null) {
+          //       return BetterPlayer(
+          //         controller: _controller!,
+          //       );
+          //     } else {
+          //       return const SizedBox();
+          //     }
+          //   },
+          // ),
           SizedBox(
             height: 20,
           ),
-
           AnimatedContainer(
             width: double.infinity,
             height: 350,
