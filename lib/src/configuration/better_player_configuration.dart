@@ -132,7 +132,7 @@ class BetterPlayerConfiguration {
     this.placeholderOnTop = true,
     this.overlay,
     this.errorBuilder,
-    this.allowedScreenSleep = false,
+    this.allowedScreenSleep = true,
     this.fullScreenAspectRatio,
     this.deviceOrientationsOnFullScreen = const [
       DeviceOrientation.landscapeLeft,

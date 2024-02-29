@@ -76,8 +76,8 @@ class BetterPlayerControlsConfiguration {
   final Duration controlsHideTime;
 
   ///Parameter used to build custom controls
-  final Widget Function(BetterPlayerController controller,
-      Function(bool) onPlayerVisibilityChanged)? customControlsBuilder;
+  final Widget Function(BetterPlayerController controller, Function(bool) onPlayerVisibilityChanged)?
+      customControlsBuilder;
 
   ///Parameter used to change theme of the player
   final BetterPlayerTheme? playerTheme;
@@ -209,8 +209,8 @@ class BetterPlayerControlsConfiguration {
     this.subtitlesIcon = Icons.closed_caption_outlined,
     this.audioTracksIcon = Icons.audiotrack_outlined,
     this.overflowMenuIconsColor = Colors.black,
-    this.forwardSkipTimeInMilliseconds = 10000,
-    this.backwardSkipTimeInMilliseconds = 10000,
+    this.forwardSkipTimeInMilliseconds = 5000,
+    this.backwardSkipTimeInMilliseconds = 5000,
     this.loadingColor = Colors.white,
     this.loadingWidget,
     this.backgroundColor = Colors.black,
