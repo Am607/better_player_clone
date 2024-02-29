@@ -103,7 +103,7 @@ class _BetterPlayerCupertinoControlsState
             //     Color(0xff000000),
             //   ], begin: Alignment.topCenter, end: Alignment.bottomCenter),
             // ),
-            decoration: BoxDecoration(color: Colors.black.withOpacity(.5)
+            decoration: BoxDecoration(color: Colors.black.withOpacity(.4)
                 // gradient: LinearGradient(
                 //   begin: Alignment(-0.00, -1.00),
                 //   end: Alignment(0, 1),
@@ -456,6 +456,9 @@ class _BetterPlayerCupertinoControlsState
         betterPlayerController?.betterPlayerAsmsTrack?.bitrate == 0) {
       return betterPlayerController!.translations.qualityAuto;
     } else {
+      if (betterPlayerController?.betterPlayerAsmsTrack?.height == null) {
+        return 'Auto';
+      }
       return '${betterPlayerController?.betterPlayerAsmsTrack?.height}p';
     }
   }
@@ -531,7 +534,12 @@ class _BetterPlayerCupertinoControlsState
     return InkWell(
       onTap: _onPlayPause,
       child: Container(
-        color: Colors.transparent,
+        decoration: BoxDecoration(
+          shape: BoxShape.circle,
+          color: const Color(0x33263047),
+          // color: Colors.white.withOpacity(.8),
+        ),
+        padding: EdgeInsets.fromLTRB(11, 11, 7, 11),
         margin: const EdgeInsets.symmetric(
           horizontal: 20,
           vertical: 20,
@@ -580,7 +588,12 @@ class _BetterPlayerCupertinoControlsState
     return GestureDetector(
       onTap: skipBack,
       child: Container(
-        color: Colors.transparent,
+        decoration: BoxDecoration(
+          shape: BoxShape.circle,
+          color: const Color(0x33263047),
+          // color: Colors.white.withOpacity(.8),
+        ),
+        padding: EdgeInsets.fromLTRB(9, 6, 9, 9),
         // margin: const EdgeInsets.only(left: 10.0),
         margin: const EdgeInsets.symmetric(
           horizontal: 20,
@@ -599,7 +612,12 @@ class _BetterPlayerCupertinoControlsState
     return GestureDetector(
       onTap: skipForward,
       child: Container(
-        color: Colors.transparent,
+        decoration: BoxDecoration(
+          shape: BoxShape.circle,
+          color: const Color(0x33263047),
+          // color: Colors.white.withOpacity(.8),
+        ),
+        padding: EdgeInsets.fromLTRB(9, 6, 9, 9),
         margin: const EdgeInsets.symmetric(
           horizontal: 20,
           vertical: 20,
