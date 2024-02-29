@@ -1,6 +1,6 @@
 name: better_player
 description: Advanced video player based on video_player and Chewie. It's solves many typical use cases and it's easy to run.
-version: 0.1.0
+version: 0.1.1
 # Disabled because of warning from analyzer
 # authors:
 #  - Jakub Homlala <jhomlala@gmail.com>
@@ -22,6 +22,7 @@ dependencies:
   path_provider: ^2.0.14
   collection: ^1.17.0
   xml: ^6.1.0
+  flutter_svg: ^2.0.9
 
 dev_dependencies:
   lint: ^1.10.0
@@ -29,8 +30,19 @@ dev_dependencies:
     sdk: flutter
   flutter_localizations:
     sdk: flutter
+    
 
 flutter:
+  assets:
+    - packages/better_player/assets/player/exit_full_screen.svg
+    - packages/better_player/assets/player/full_screen.svg
+    - packages/better_player/assets/player/pause.svg
+    - packages/better_player/assets/player/play.svg
+    - packages/better_player/assets/player/quality.svg
+    - packages/better_player/assets/player/seek_back.svg
+    - packages/better_player/assets/player/seek_front.svg
+    - packages/better_player/assets/player/speed.svg
+    - packages/better_player/assets/player/new.png
   plugin:
     platforms:
       android:
