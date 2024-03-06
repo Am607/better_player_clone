@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:developer';
 
 import 'package:better_player/better_player.dart';
 import 'package:better_player/src/configuration/better_player_controller_event.dart';
@@ -95,6 +96,12 @@ class _BetterPlayerState extends State<BetterPlayer>
       BetterPlayerUtils.log(exception.toString());
     }
     widget.controller.setupTranslations(locale);
+
+
+      _controllerEventSubscription =
+        widget.controller.controllerEventStream.listen((event) {
+          log('123listeninggg----');
+         });
   }
 
   @override
