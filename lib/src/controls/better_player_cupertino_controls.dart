@@ -124,7 +124,12 @@ class _BetterPlayerCupertinoControlsState
           ),
         ),
         if (_wasLoading)
-          Positioned(child: _buildLoadingWidget())
+          Positioned(
+              top: 0,
+              bottom: 0,
+              left: 0,
+              right: 0,
+              child: Center(child: _buildLoadingWidget()))
         else
           Positioned(
             top: 0,
@@ -510,8 +515,8 @@ class _BetterPlayerCupertinoControlsState
     return InkWell(
       onTap: _onPlayPause,
       child: SizedBox(
-        width: 82,
-        height: 82,
+        width: (betterPlayerController?.isFullScreen ?? false) ? 104 : 81,
+        height: (betterPlayerController?.isFullScreen ?? false) ? 104 : 81,
         child: Container(
           decoration: BoxDecoration(
             shape: BoxShape.circle,
@@ -527,8 +532,8 @@ class _BetterPlayerCupertinoControlsState
           ),
           child: SvgPicture.asset(
             controller.value.isPlaying ? PlayerImages.pause : PlayerImages.play,
-            width: 24,
-            height: 24,
+            width: (betterPlayerController?.isFullScreen ?? false) ? 50 : 24,
+            height: (betterPlayerController?.isFullScreen ?? false) ? 50 : 24,
             fit: BoxFit.scaleDown,
           ),
         ),
@@ -584,8 +589,8 @@ class _BetterPlayerCupertinoControlsState
         ),
         child: SvgPicture.asset(
           PlayerImages.seekBack,
-          width: 24,
-          height: 24,
+          width: (betterPlayerController?.isFullScreen ?? false) ? 50 : 24,
+          height: (betterPlayerController?.isFullScreen ?? false) ? 50 : 24,
           fit: BoxFit.scaleDown,
         ),
       ),
@@ -608,8 +613,8 @@ class _BetterPlayerCupertinoControlsState
         ),
         child: SvgPicture.asset(
           PlayerImages.seekFront,
-          width: 24,
-          height: 24,
+          width: (betterPlayerController?.isFullScreen ?? false) ? 50 : 24,
+          height: (betterPlayerController?.isFullScreen ?? false) ? 50 : 24,
           fit: BoxFit.scaleDown,
         ),
       ),
