@@ -466,7 +466,7 @@ abstract class BetterPlayerControlsState<T extends StatefulWidget>
 
   void _showCupertinoModalBottomSheet(List<Widget> children) {
     showCupertinoModalPopup<void>(
-      barrierColor: Colors.transparent,
+      // barrierColor: Colors.transparent,
       context: context,
       useRootNavigator:
           betterPlayerController?.betterPlayerConfiguration.useRootNavigator ??
@@ -475,6 +475,7 @@ abstract class BetterPlayerControlsState<T extends StatefulWidget>
         return SingleChildScrollView(
           physics: const BouncingScrollPhysics(),
           child: Container(
+            width: (betterPlayerController?.isFullScreen ?? false) ? 390 : null,
             padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 8),
             decoration: BoxDecoration(
               color: betterPlayerControlsConfiguration.overflowModalColor,
@@ -485,7 +486,9 @@ abstract class BetterPlayerControlsState<T extends StatefulWidget>
             ),
             child: SafeArea(
               top: false,
+              left: !(betterPlayerController?.isFullScreen ?? false),
               child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   const SizedBox(
                     height: 7,
