@@ -8,8 +8,9 @@ class Constants {
   static const String networkTestVideoEncryptUrl =
       "https://github.com/tinusneethling/betterplayer/raw/ClearKeySupport/example/assets/testvideo_encrypt.mp4";
   static const String fileExampleSubtitlesUrl = "example_subtitles.srt";
-  static const String hlsTestStreamUrl =
-      "https://mtoczko.github.io/hls-test-streams/test-group/playlist.m3u8";
+  static const String hlsTestStreamUrl ='https://devstreaming-cdn.apple.com/videos/streaming/examples/img_bipbop_adv_example_fmp4/master.m3u8';
+  // 'https://demo.unified-streaming.com/k8s/features/stable/video/tears-of-steel/tears-of-steel.ism/.m3u8';
+      // "https://mtoczko.github.io/hls-test-streams/test-group/playlist.m3u8";
   static const String hlsPlaylistUrl =
       "https://bitdash-a.akamaihd.net/content/sintel/hls/playlist.m3u8";
   static const Map<String, String> exampleResolutionsUrls = {

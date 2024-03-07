@@ -98,10 +98,7 @@ class _BetterPlayerState extends State<BetterPlayer>
     widget.controller.setupTranslations(locale);
 
 
-      _controllerEventSubscription =
-        widget.controller.controllerEventStream.listen((event) {
-          log('123listeninggg----');
-         });
+    
   }
 
   @override

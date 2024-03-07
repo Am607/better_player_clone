@@ -1,7 +1,9 @@
 import 'dart:async';
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:better_player/better_player.dart';
+import 'package:better_player/src/checkPoints/check_points.dart';
 import 'package:better_player/src/configuration/better_player_controller_event.dart';
 import 'package:better_player/src/core/better_player_utils.dart';
 import 'package:better_player/src/subtitles/better_player_subtitle.dart';
@@ -10,6 +12,7 @@ import 'package:better_player/src/video_player/video_player.dart';
 import 'package:better_player/src/video_player/video_player_platform_interface.dart';
 import 'package:collection/collection.dart' show IterableExtension;
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:path_provider/path_provider.dart';
 
 ///Class used to control overall Better Player behavior. Main class to change
@@ -554,6 +557,15 @@ class BetterPlayerController {
     return temp;
   }
 
+  Map<int, CheckPointData> _checkPoints = {};
+
+  /// Retrieves the crossed check points count
+  int getCheckPointsCount() {
+    return _checkPoints.values
+        .where((element) => element.status == true)
+        .length;
+  }
+
   ///Initializes video based on configuration. Invoke actions which need to be
   ///run on player start.
   Future _initializeVideo() async {
@@ -589,6 +601,35 @@ class BetterPlayerController {
     final startAt = betterPlayerConfiguration.startAt;
     if (startAt != null) {
       seekTo(startAt);
+    }
+    int totalDuration = (videoPlayerController?.value.duration?.inSeconds) ?? 0;
+
+    int singleSegmentDuration = totalDuration > 0 ? totalDuration ~/ 10 : 0;
+
+    int tolerance = (singleSegmentDuration * 5) ~/ 100; // 5 % single segment
+    _checkPoints.clear();
+    for (int i = 0; i < 10; i++) {
+      _checkPoints[i] = CheckPointData(
+          status: false, videoFraction: singleSegmentDuration * (i + 1));
+    }
+
+    if (singleSegmentDuration > 0) {
+      videoPlayerController?.addListener(() async {
+        int position = videoPlayerController?.value.position.inSeconds ?? 0;
+
+        int key = (position + tolerance) ~/ singleSegmentDuration;
+
+        
+        double? currentFraction = _checkPoints[key]?.videoFraction;
+
+        if (currentFraction != null && _checkPoints[key]?.status == false) {
+          if ((currentFraction - singleSegmentDuration) + tolerance >=
+              position) {
+           
+            _checkPoints[key] = _checkPoints[key]!.copyWith(status: true);
+          }
+        }
+      });
     }
   }
 
@@ -1312,6 +1353,7 @@ class BetterPlayerController {
       _nextVideoTimeStreamController.close();
       _controlsVisibilityStreamController.close();
       _videoEventStreamSubscription?.cancel();
+      // _checkPoints.clear();
       _disposed = true;
       _controllerEventStreamController.close();
 
