@@ -165,6 +165,11 @@ class _BetterPlayerState extends State<BetterPlayer>
 
   @override
   Widget build(BuildContext context) {
+
+   return
+HtmlElementView(viewType: 'adarsh',onPlatformViewCreated: (id) {
+debugPrint('000001---->');
+},);
     return BetterPlayerControllerProvider(
       controller: widget.controller,
       child: _buildPlayer(),
@@ -267,6 +272,9 @@ class _BetterPlayerState extends State<BetterPlayer>
   }
 
   Widget _buildPlayer() {
+
+;
+
     return VisibilityDetector(
       key: Key("${widget.controller.hashCode}_key"),
       onVisibilityChanged: (VisibilityInfo info) =>

@@ -24,6 +24,7 @@ dependencies:
   xml: ^6.1.0
   flutter_svg: ^2.0.9
 
+
 dev_dependencies:
   lint: ^1.10.0
   flutter_test:
@@ -50,3 +51,6 @@ flutter:
         pluginClass: BetterPlayerPlugin
       ios:
         pluginClass: BetterPlayerPlugin
+      web:
+        pluginClass: BetterPlayerPlugin
+        fileName: better_player_web.dart
