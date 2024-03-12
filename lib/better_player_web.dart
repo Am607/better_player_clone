@@ -50,11 +50,11 @@ class BetterPlayerPlugin extends VideoPlayerPlatform {
           ..style.height = '100%'
           ..children = [
             html.VideoElement()
-              ..id = textureId.toString()
+              ..id = 'my-player'
               ..style.minHeight = "100%"
               ..style.minHeight = "100%"
               ..style.width = "100%"
-              ..src ='https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4'
+            
           
               
             
