@@ -560,10 +560,9 @@ class BetterPlayerController {
   Map<int, CheckPointData> _checkPoints = {};
 
   /// Retrieves the crossed check points count
-  int getCheckPointsCount() {
-    return _checkPoints.values
-        .where((element) => element.status == true)
-        .length;
+  Map<int,bool> getCheckPointsCount() {
+    return _checkPoints.map((key,value) => MapEntry(key, value.status));
+       
   }
 
   ///Initializes video based on configuration. Invoke actions which need to be
