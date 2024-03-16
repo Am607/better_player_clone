@@ -303,7 +303,7 @@ class _BetterPlayerVideoFitWidgetState extends State<_BetterPlayerVideoFitWidget
   @override
   Widget build(BuildContext context) {
 
-    if (true) {
+
 
       return Center(
         child: ClipRect(
@@ -321,10 +321,7 @@ class _BetterPlayerVideoFitWidgetState extends State<_BetterPlayerVideoFitWidget
           ),
         ),
       );
-    } else {
-          
-      return const SizedBox();
-    }
+  
   }
 
   @override

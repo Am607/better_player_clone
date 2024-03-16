@@ -4,7 +4,7 @@
 
 // Dart imports:
 import 'dart:async';
-import 'dart:developer';
+
 import 'dart:io';
 import 'package:better_player/src/configuration/better_player_buffering_configuration.dart';
 import 'package:better_player/src/video_player/video_player_platform_interface.dart';
@@ -13,8 +13,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 
-import 'dart:ui' as ui;
-import 'dart:html' as html;
+
 
 
 
@@ -415,6 +414,10 @@ class VideoPlayerController extends ValueNotifier<VideoPlayerValue> {
 
     await VideoPlayerPlatform.instance
         .setDataSource(_textureId, dataSourceDescription);
+
+        if(kIsWeb){
+          _updateDuration();
+        }
     return _initializingCompleter.future;
   }
 
@@ -464,12 +467,17 @@ class VideoPlayerController extends ValueNotifier<VideoPlayerValue> {
   }
 
   Future<void> _applyPlayPause() async {
+    
     if (!_created || _isDisposed) {
       return;
     }
     _timer?.cancel();
     if (value.isPlaying) {
       await _videoPlayerPlatform.play(_textureId);
+
+
+      
+
       _timer = Timer.periodic(
         const Duration(milliseconds: 300),
         (Timer timer) async {
@@ -497,6 +505,38 @@ class VideoPlayerController extends ValueNotifier<VideoPlayerValue> {
     }
   }
 
+  Future<void>_updateDuration()async{
+  if (!_created || _isDisposed) {
+      return;
+    }
+    _timer?.cancel();
+
+
+    _timer = Timer.periodic(
+        const Duration(milliseconds: 300),
+        (Timer timer) async {
+          if (_isDisposed) {
+            return;
+          }
+          final Duration? newPosition = await position;
+  
+          final DateTime? newAbsolutePosition = await absolutePosition;
+          // ignore: invariant_booleans
+          if (_isDisposed) {
+            return;
+          }
+          _updatePosition(newPosition, absolutePosition: newAbsolutePosition);
+          if (_seekPosition != null && newPosition != null) {
+            final difference =
+                newPosition.inMilliseconds - _seekPosition!.inMilliseconds;
+            if (difference > 0) {
+              _seekPosition = null;
+            }
+          }
+        },
+      );
+  }
+
   Future<void> _applyVolume() async {
     if (!_created || _isDisposed) {
       return;
@@ -513,6 +553,7 @@ class VideoPlayerController extends ValueNotifier<VideoPlayerValue> {
 
   /// The position in the current video.
   Future<Duration?> get position async {
+   
     if (!value.initialized && _isDisposed) {
       return null;
     }
@@ -894,8 +935,10 @@ class _VideoProgressIndicatorState extends State<VideoProgressIndicator> {
 
   @override
   Widget build(BuildContext context) {
+
+
     Widget progressIndicator;
-    if (controller.value.initialized) {
+    if (controller.value.initialized ) {
       final int duration = controller.value.duration!.inMilliseconds;
       final int position = controller.value.position.inMilliseconds;
 

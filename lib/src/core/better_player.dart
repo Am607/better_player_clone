@@ -1,10 +1,12 @@
 import 'dart:async';
-import 'dart:developer';
-import 'dart:js' as js ;
+
+// import 'dart:js' as js;
+
 import 'package:better_player/better_player.dart';
 import 'package:better_player/src/configuration/better_player_controller_event.dart';
 import 'package:better_player/src/core/better_player_utils.dart';
 import 'package:better_player/src/core/better_player_with_controls.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:visibility_detector/visibility_detector.dart';
@@ -162,15 +164,15 @@ class _BetterPlayerState extends State<BetterPlayer>
 
   @override
   Widget build(BuildContext context) {
-    return HtmlElementView(
-      viewType: 'video_1',
-      onPlatformViewCreated: (id) {
+    if (kIsWeb) {
+      return HtmlElementView(
+        viewType: 'video_1',
+        onPlatformViewCreated: (id) {
+          // js.context.callMethod('initPlayer');
+        },
+      );
+    }
 
-      js.context.callMethod('initPlayer');
-            js.context.callMethod('setSrc');
-        debugPrint('000001---->');
-      },
-    );
     return BetterPlayerControllerProvider(
       controller: widget.controller,
       child: _buildPlayer(),

@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:better_player/better_player.dart';
 import 'package:better_player_example/pages/welcome_page.dart';
 import 'package:flutter/foundation.dart';
@@ -28,13 +30,11 @@ class MyApp extends StatelessWidget {
         theme: ThemeData(
           primarySwatch: Colors.green,
         ),
-        home:kIsWeb?WebPlayer(): WelcomePage(),
+        home: kIsWeb ? WebPlayer() : WelcomePage(),
       ),
     );
   }
 }
-
-
 
 class WebPlayer extends StatefulWidget {
   const WebPlayer({Key? key}) : super(key: key);
@@ -44,16 +44,68 @@ class WebPlayer extends StatefulWidget {
 }
 
 class _WebPlayerState extends State<WebPlayer> {
-
-late BetterPlayerController betterPlayerController;
+  late BetterPlayerController betterPlayerController;
   @override
   void initState() {
     // TODO: implement initState
-    betterPlayerController =BetterPlayerController(BetterPlayerConfiguration(),betterPlayerDataSource: BetterPlayerDataSource.network('http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4'));
+    betterPlayerController = BetterPlayerController(BetterPlayerConfiguration(),
+        betterPlayerDataSource: BetterPlayerDataSource.network(
+            'http://sample.vodobox.net/skate_phantom_flex_4k/skate_phantom_flex_4k.m3u8',
+            videoFormat: BetterPlayerVideoFormat.hls));
+
+    // betterPlayerController.setupDataSource(BetterPlayerDataSource.network('http://sample.vodobox.net/skate_phantom_flex_4k/skate_phantom_flex_4k.m3u8'));
     super.initState();
   }
+
   @override
   Widget build(BuildContext context) {
-    return  BetterPlayer(controller: betterPlayerController);
+    return Column(
+      children: [
+        Flexible(child: BetterPlayer(controller: betterPlayerController)),
+        SizedBox(
+          height: 15,
+        ),
+        Wrap(
+          children: [
+            ElevatedButton(
+                onPressed: () async {
+                  if (betterPlayerController.isPlaying() == true) {
+                    await betterPlayerController.pause();
+                  } else {
+                    await betterPlayerController.play();
+                  }
+                },
+                child: Text('Play/pause')),
+            ElevatedButton(
+                onPressed: () async {
+                  final result =
+                      await betterPlayerController.getCheckPointsCount();
+                      log('check points is $result');
+                },
+                child: Text('get checkpoints ')),
+                   ElevatedButton(
+                onPressed: () async {
+
+                   final position=   await betterPlayerController.videoPlayerController?.value.position;
+                   log('1234 position is $position');
+                },
+                child: Text('get duration ')),
+
+
+                 ElevatedButton(
+                onPressed: () async {
+
+                   final position=   await betterPlayerController.videoPlayerController?.value.duration;
+                   log('456 total is $position');
+
+                },
+                child: Text('Total Duration '))
+          ],
+        ),
+        SizedBox(
+          height: 15,
+        ),
+      ],
+    );
   }
 }
