@@ -560,9 +560,8 @@ class BetterPlayerController {
   Map<int, CheckPointData> _checkPoints = {};
 
   /// Retrieves the crossed check points count
-  Map<int,bool> getCheckPointsCount() {
-    return _checkPoints.map((key,value) => MapEntry(key, value.status));
-       
+  Map<int, bool> getCheckPointsCount() {
+    return _checkPoints.map((key, value) => MapEntry(key, value.status));
   }
 
   ///Initializes video based on configuration. Invoke actions which need to be
@@ -607,24 +606,25 @@ class BetterPlayerController {
 
     int tolerance = (singleSegmentDuration * 5) ~/ 100; // 5 % single segment
     _checkPoints.clear();
+   
     for (int i = 0; i < 10; i++) {
       _checkPoints[i] = CheckPointData(
           status: false, videoFraction: singleSegmentDuration * (i + 1));
     }
 
     if (singleSegmentDuration > 0) {
-      videoPlayerController?.addListener(() async {
+      
+      videoPlayerController?.addListener(()  {
+
         int position = videoPlayerController?.value.position.inSeconds ?? 0;
 
         int key = (position + tolerance) ~/ singleSegmentDuration;
 
-        
         double? currentFraction = _checkPoints[key]?.videoFraction;
 
         if (currentFraction != null && _checkPoints[key]?.status == false) {
           if ((currentFraction - singleSegmentDuration) + tolerance >=
               position) {
-           
             _checkPoints[key] = _checkPoints[key]!.copyWith(status: true);
           }
         }
@@ -663,6 +663,11 @@ class BetterPlayerController {
     }
   }
 
+
+bool isWebFullScreen (){
+
+  return  videoPlayerController?.isWebFullScreen()??false;
+}
   ///Start video playback. Play will be triggered only if current lifecycle state
   ///is resumed.
   Future<void> play() async {

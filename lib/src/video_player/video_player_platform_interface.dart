@@ -61,6 +61,11 @@ abstract class VideoPlayerPlatform {
     throw UnimplementedError('init() has not been implemented.');
   }
 
+
+    bool isWebFullScreen() {
+    throw UnimplementedError('init() has not been implemented.');
+  }
+
   /// Clears one video.
   Future<void> dispose(int? textureId) {
     throw UnimplementedError('dispose() has not been implemented.');
@@ -465,6 +470,7 @@ enum VideoEventType {
 
   /// An unknown event has been received.
   unknown,
+
 }
 
 /// Describes a discrete segment of time within a video using a [start] and

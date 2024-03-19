@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:developer';
 import 'package:better_player/src/configuration/better_player_controls_configuration.dart';
 import 'package:better_player/src/controls/better_player_controls_state.dart';
 import 'package:better_player/src/controls/better_player_cupertino_progress_bar.dart';
@@ -60,6 +61,8 @@ class _BetterPlayerCupertinoControlsState
 
   @override
   Widget build(BuildContext context) {
+
+
     return buildLTRDirectionality(_buildMainWidget());
   }
 
@@ -75,7 +78,8 @@ class _BetterPlayerCupertinoControlsState
     }
 
     _betterPlayerController = BetterPlayerController.of(context);
-    _controller = _betterPlayerController!.videoPlayerController;
+    _controller =
+     _betterPlayerController!.videoPlayerController;
     final backgroundColor = _controlsConfiguration.controlBarColor;
     final iconColor = _controlsConfiguration.iconsColor;
     final orientation = MediaQuery.of(context).orientation;

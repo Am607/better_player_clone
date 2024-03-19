@@ -4,18 +4,15 @@
 
 // Dart imports:
 import 'dart:async';
+import 'dart:developer';
 
 import 'dart:io';
 import 'package:better_player/src/configuration/better_player_buffering_configuration.dart';
 import 'package:better_player/src/video_player/video_player_platform_interface.dart';
+import 'package:better_player/web/interop.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-
-
-
-
-
 
 final VideoPlayerPlatform _videoPlayerPlatform = VideoPlayerPlatform.instance
 // This will clear all open videos on the platform when a full restart is
@@ -219,6 +216,7 @@ class VideoPlayerController extends ValueNotifier<VideoPlayerValue> {
         return;
       }
       videoEventStreamController.add(event);
+
       switch (event.eventType) {
         case VideoEventType.initialized:
           value = value.copyWith(
@@ -259,6 +257,7 @@ class VideoPlayerController extends ValueNotifier<VideoPlayerValue> {
         case VideoEventType.pipStop:
           value = value.copyWith(isPip: false);
           break;
+
         case VideoEventType.unknown:
           break;
       }
@@ -415,9 +414,6 @@ class VideoPlayerController extends ValueNotifier<VideoPlayerValue> {
     await VideoPlayerPlatform.instance
         .setDataSource(_textureId, dataSourceDescription);
 
-        if(kIsWeb){
-          _updateDuration();
-        }
     return _initializingCompleter.future;
   }
 
@@ -446,6 +442,14 @@ class VideoPlayerController extends ValueNotifier<VideoPlayerValue> {
     await _applyPlayPause();
   }
 
+bool isWebFullScreen()  {
+    if (kIsWeb) {
+      return  _videoPlayerPlatform.isWebFullScreen();
+    } else {
+      return false;
+    }
+  }
+
   /// Sets whether or not the video should loop after playing once. See also
   /// [VideoPlayerValue.isLooping].
   Future<void> setLooping(bool looping) async {
@@ -467,16 +471,12 @@ class VideoPlayerController extends ValueNotifier<VideoPlayerValue> {
   }
 
   Future<void> _applyPlayPause() async {
-    
     if (!_created || _isDisposed) {
       return;
     }
     _timer?.cancel();
     if (value.isPlaying) {
       await _videoPlayerPlatform.play(_textureId);
-
-
-      
 
       _timer = Timer.periodic(
         const Duration(milliseconds: 300),
@@ -490,6 +490,7 @@ class VideoPlayerController extends ValueNotifier<VideoPlayerValue> {
           if (_isDisposed) {
             return;
           }
+
           _updatePosition(newPosition, absolutePosition: newAbsolutePosition);
           if (_seekPosition != null && newPosition != null) {
             final difference =
@@ -503,38 +504,6 @@ class VideoPlayerController extends ValueNotifier<VideoPlayerValue> {
     } else {
       await _videoPlayerPlatform.pause(_textureId);
     }
-  }
-
-  Future<void>_updateDuration()async{
-  if (!_created || _isDisposed) {
-      return;
-    }
-    _timer?.cancel();
-
-
-    _timer = Timer.periodic(
-        const Duration(milliseconds: 300),
-        (Timer timer) async {
-          if (_isDisposed) {
-            return;
-          }
-          final Duration? newPosition = await position;
-  
-          final DateTime? newAbsolutePosition = await absolutePosition;
-          // ignore: invariant_booleans
-          if (_isDisposed) {
-            return;
-          }
-          _updatePosition(newPosition, absolutePosition: newAbsolutePosition);
-          if (_seekPosition != null && newPosition != null) {
-            final difference =
-                newPosition.inMilliseconds - _seekPosition!.inMilliseconds;
-            if (difference > 0) {
-              _seekPosition = null;
-            }
-          }
-        },
-      );
   }
 
   Future<void> _applyVolume() async {
@@ -553,7 +522,6 @@ class VideoPlayerController extends ValueNotifier<VideoPlayerValue> {
 
   /// The position in the current video.
   Future<Duration?> get position async {
-   
     if (!value.initialized && _isDisposed) {
       return null;
     }
@@ -719,7 +687,6 @@ class _VideoPlayerState extends State<VideoPlayer> {
   void initState() {
     super.initState();
 
-   
     _textureId = widget.controller!.textureId;
     // Need to listen for initialization events since the actual texture ID
     // becomes available after asynchronous initialization finishes.
@@ -742,13 +709,22 @@ class _VideoPlayerState extends State<VideoPlayer> {
 
   @override
   Widget build(BuildContext context) {
-   
-
-
     return _textureId == null
         ? Container(
-        
-        )
+            color: Colors.green,
+            height: 300,
+            width: 400,
+          )
+        // : (kIsWeb)
+        //     ? HtmlElementView(
+        //         viewType: 'video-$_textureId',
+        //         onPlatformViewCreated: (id) {
+
+        //           final player = videojs('my-player', {});
+        //           // final player = videojs('video-$id',{});
+        //         },
+        //       )
+
         : _videoPlayerPlatform.buildView(_textureId);
   }
 }
@@ -935,10 +911,8 @@ class _VideoProgressIndicatorState extends State<VideoProgressIndicator> {
 
   @override
   Widget build(BuildContext context) {
-
-
     Widget progressIndicator;
-    if (controller.value.initialized ) {
+    if (controller.value.initialized) {
       final int duration = controller.value.duration!.inMilliseconds;
       final int position = controller.value.position.inMilliseconds;
 

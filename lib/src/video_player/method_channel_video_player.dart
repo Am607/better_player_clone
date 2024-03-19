@@ -2,6 +2,7 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 import 'dart:async';
+import 'dart:developer';
 
 import 'package:better_player/src/configuration/better_player_buffering_configuration.dart';
 import 'package:better_player/src/core/better_player_utils.dart';
@@ -203,6 +204,8 @@ class MethodChannelVideoPlayer extends VideoPlayerPlatform {
 
   @override
   Future<Duration> getPosition(int? textureId) async {
+
+
     return Duration(
         milliseconds: await _channel.invokeMethod<int>(
               'position',
@@ -213,6 +216,8 @@ class MethodChannelVideoPlayer extends VideoPlayerPlatform {
 
   @override
   Future<DateTime?> getAbsolutePosition(int? textureId) async {
+
+
     final int milliseconds = await _channel.invokeMethod<int>(
           'absolutePosition',
           <String, dynamic>{'textureId': textureId},
@@ -333,6 +338,7 @@ class MethodChannelVideoPlayer extends VideoPlayerPlatform {
       late Map<dynamic, dynamic> map;
       if (event is Map) {
         map = event;
+
       }
       final String? eventType = map["event"] as String?;
       final String? key = map["key"] as String?;
@@ -359,7 +365,8 @@ class MethodChannelVideoPlayer extends VideoPlayerPlatform {
           return VideoEvent(
             eventType: VideoEventType.initialized,
             key: key,
-            duration: Duration(milliseconds: map['duration'] as int),
+            duration:
+             Duration(milliseconds: map['duration'] as int),
             size: size,
           );
         case 'completed':

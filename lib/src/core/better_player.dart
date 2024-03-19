@@ -1,12 +1,14 @@
 import 'dart:async';
-
-// import 'dart:js' as js;
+import 'dart:convert';
+import 'dart:js_interop';
 
 import 'package:better_player/better_player.dart';
 import 'package:better_player/src/configuration/better_player_controller_event.dart';
 import 'package:better_player/src/core/better_player_utils.dart';
 import 'package:better_player/src/core/better_player_with_controls.dart';
+import 'package:better_player/web/interop.dart';
 import 'package:flutter/foundation.dart';
+import 'dart:js' as js;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:visibility_detector/visibility_detector.dart';
@@ -166,13 +168,18 @@ class _BetterPlayerState extends State<BetterPlayer>
   Widget build(BuildContext context) {
     if (kIsWeb) {
       return HtmlElementView(
-        viewType: 'video_1',
+        viewType: 'video-1',
         onPlatformViewCreated: (id) {
+          final videoOptions = {
+            "playbackRates": [ 1, 2]
+          };
           // js.context.callMethod('initPlayer');
+          final player = videojs('player-1',(videoOptions.toJS) );
+          player.httpSourceSelector();
+          // final player = videojs('video-$id',{});
         },
       );
     }
-
     return BetterPlayerControllerProvider(
       controller: widget.controller,
       child: _buildPlayer(),
@@ -275,8 +282,6 @@ class _BetterPlayerState extends State<BetterPlayer>
   }
 
   Widget _buildPlayer() {
-    ;
-
     return VisibilityDetector(
       key: Key("${widget.controller.hashCode}_key"),
       onVisibilityChanged: (VisibilityInfo info) =>

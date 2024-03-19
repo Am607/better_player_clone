@@ -4,13 +4,16 @@ function initPlayer() {
 
         console.log("init player111----->");
 
-        var options = {};
+        var options = {
+            playbackRates: [0.5, 1, 1.5, 2]
+        };
 
-        var player = videojs('my-player', options);
+        var player = videojs('player-1', options);
        
 
-        player.on(['loadstart', 'play', 'playing', 'firstplay', 'pause', 'ended', 'adplay', 'adplaying', 'adfirstplay', 'adpause', 'adended', 'contentplay', 'contentplaying', 'contentfirstplay', 'contentpause', 'contentended', 'contentupdate'], function (e) {
-            console.warn('VIDEOJS player event: ', e.type);
+        player.on(['loadstart', 'play', 'playing', 'firstplay', 'pause', 'ended', 'adplay', 'adplaying', 'adfirstplay', 'adpause', 'adended', 'contentplay', 'contentplaying', 'contentfirstplay', 'contentpause', 'contentended', 'contentupdate'],
+         function (e) {
+            // console.warn('VIDEOJS player event: ', e.type);
         });
 
 

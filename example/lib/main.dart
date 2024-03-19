@@ -59,48 +59,60 @@ class _WebPlayerState extends State<WebPlayer> {
 
   @override
   Widget build(BuildContext context) {
+   
     return Column(
       children: [
         Flexible(child: BetterPlayer(controller: betterPlayerController)),
         SizedBox(
           height: 15,
         ),
-        Wrap(
-          children: [
-            ElevatedButton(
-                onPressed: () async {
-                  if (betterPlayerController.isPlaying() == true) {
-                    await betterPlayerController.pause();
-                  } else {
-                    await betterPlayerController.play();
-                  }
-                },
-                child: Text('Play/pause')),
-            ElevatedButton(
-                onPressed: () async {
-                  final result =
-                      await betterPlayerController.getCheckPointsCount();
-                      log('check points is $result');
-                },
-                child: Text('get checkpoints ')),
-                   ElevatedButton(
-                onPressed: () async {
+        IgnorePointer(
+          ignoring: betterPlayerController.isWebFullScreen(),
+          child: Wrap(
+            children: [
+              ElevatedButton(
+                  onPressed: () async {
 
-                   final position=   await betterPlayerController.videoPlayerController?.value.position;
-                   log('1234 position is $position');
-                },
-                child: Text('get duration ')),
-
-
-                 ElevatedButton(
-                onPressed: () async {
-
-                   final position=   await betterPlayerController.videoPlayerController?.value.duration;
-                   log('456 total is $position');
-
-                },
-                child: Text('Total Duration '))
-          ],
+                    if(betterPlayerController.isWebFullScreen()){
+                      
+                    }
+                    if (betterPlayerController.isPlaying() == true) {
+                      await betterPlayerController.pause();
+                    } else {
+                      await betterPlayerController.play();
+                    }
+                  },
+                  child: Text('Play/pause')),
+              ElevatedButton(
+                  onPressed: () async {
+                    final result =
+                        await betterPlayerController.getCheckPointsCount();
+                    log('check points is $result');
+                  },
+                  child: Text('get checkpoints ')),
+              ElevatedButton(
+                  onPressed: () async {
+                    final position = await betterPlayerController
+                        .videoPlayerController?.value.position;
+                    log('1234 position is $position');
+                  },
+                  child: Text('get duration ')),
+              ElevatedButton(
+                  onPressed: () async {
+                    final position = await betterPlayerController
+                        .videoPlayerController?.value.duration;
+                    final isInitialized = await betterPlayerController
+                        .videoPlayerController?.value.initialized;
+                    log('456 is initialized  $isInitialized and duration is $position');
+                  },
+                  child: Text('Total Duration ')),
+              ElevatedButton(
+                  onPressed: () async {
+                    betterPlayerController.dispose();
+                  },
+                  child: Text('dispose player ')),
+            ],
+          ),
         ),
         SizedBox(
           height: 15,

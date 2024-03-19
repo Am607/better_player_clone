@@ -4,9 +4,12 @@
 import 'dart:js' as js;
 import 'dart:async';
 import 'dart:developer';
+import 'dart:js_interop';
+import 'dart:js_util';
 import 'dart:ui' as ui;
 import 'dart:html' as html;
 import 'package:better_player/better_player.dart';
+import 'package:better_player/web/interop.dart';
 
 import 'package:flutter_web_plugins/flutter_web_plugins.dart';
 
@@ -18,7 +21,6 @@ import 'src/video_player/video_player_platform_interface.dart';
 class BetterPlayerPlugin extends VideoPlayerPlatform {
   /// Registers this class as the default instance of [VideoPlayerPlatform].
   static void registerWith(Registrar registrar) {
-    log('called reg with----->');
     VideoPlayerPlatform.instance = BetterPlayerPlugin();
   }
 
@@ -27,11 +29,20 @@ class BetterPlayerPlugin extends VideoPlayerPlatform {
 
   // Simulate the native "textureId".
   int _textureCounter = 1;
-
+  late StreamController<VideoEvent> eventController;
   @override
   Future<void> init() async {
-    log('init player called ====>');
-    // js.context.callMethod('initPlayer');
+    eventController = StreamController();
+  }
+
+  @override
+  Future<void> dispose(int? textureId) async {
+    var player = videojs.getPlayer(playerId(textureId));
+
+    player?.pause();
+
+    player?.dispose();
+    await eventController.close();
   }
 
   @override
@@ -41,96 +52,141 @@ class BetterPlayerPlugin extends VideoPlayerPlatform {
     int textureId = _textureCounter++;
 
     // ignore: undefined_prefixed_name
-    ui.platformViewRegistry.registerViewFactory('video_$textureId', (int id) {
+    ui.platformViewRegistry.registerViewFactory('video-$textureId', (int id) {
       final html.Element htmlElement = html.DivElement()
         ..id = "divId"
         ..style.width = '100%'
         ..style.height = '100%'
         ..children = [
           html.VideoElement()
-            ..id = 'my-player'
+            ..id = 'player-$textureId'
             ..style.minHeight = "100%"
             ..style.minHeight = "100%"
             ..style.width = "100%"
             ..controls = true
-            ..className = 'video-js vjs-theme-city'
+            ..className = 'video-js '
             
+           
         ];
       return htmlElement;
     });
-
-    log('123---> video_$textureId');
-    return 0;
+    log('texture id from reg --$textureId');
+    return textureId;
   }
 
   @override
   Stream<VideoEvent> videoEventsFor(int? textureId) {
-    // TODO: implement videoEventsFor
-    log('event handler called----->');
-    return Stream.empty();
+    return eventController.stream;
   }
 
   @override
   Future<void> setDataSource(int? textureId, DataSource dataSource) async {
-    log('set data source called--->${dataSource.formatHint}');
+    ;
+    final player = videojs.getPlayer(playerId(textureId));
+    player?.src(
+        dataSource.uri ?? '',
+        dataSource.formatHint == VideoFormat.hls
+            ? "application/x-mpegURL"
+            : '');
 
-    js.context.callMethod(
-        'setSrc', <String>[ dataSource.uri??'',dataSource.formatHint==VideoFormat.hls? "application/x-mpegURL":'']);
+    player?.on('loadeddata', allowInterop((a, b) async {
+      eventController.add(VideoEvent(
+          eventType: VideoEventType.initialized,
+          key: '',
+          duration: Duration(seconds: totalDuration(textureId))));
+    }));
+
+    player?.on('play', allowInterop((a, b) async {
+      eventController.add(VideoEvent(
+        eventType: VideoEventType.play,
+        key: '',
+      ));
+    }));
+    player?.on('pause', allowInterop((a, b) async {
+      if (eventController.isClosed) {
+        return;
+      }
+      eventController.add(VideoEvent(
+        eventType: VideoEventType.pause,
+        key: '',
+      ));
+    }));
+  }
+
+  String playerId(int? textureID) {
+    return 'player-$textureID';
+  }
+
+  int totalDuration(int? textureID) {
+    final player = videojs.getPlayer(playerId(textureID));
+    double duration = (player?.duration() ?? 0);
+    log('duration is $duration');
+
+    return duration.isNaN ? 0 : duration.toInt();
   }
 
   @override
-  Future<void> setLooping(int? textureId, bool looping) async {
+  Future<void> setTrackParameters(
+      int? textureId, int? width, int? height, int? bitrate) async {}
+  @override
+  Future<void> setLooping(int? textureId, bool looping) async {}
 
+  @override
+  Future<void> seekTo(int? textureId, Duration? position) async {
+    final player = videojs.getPlayer(playerId(textureId));
+
+    player?.currentTime(position?.inSeconds ?? 0);
   }
 
   @override
-  Future<void> setVolume(int? textureId, double volume) async {
-
+  bool isWebFullScreen()  {
+    final player = videojs.getPlayer(playerId(1));
+    return  player?.isFullscreen() ?? false;
   }
 
   @override
-  Future<void> play(int? textureId)async {
-        js.context.callMethod('play');
-  }
-
+  Future<void> setVolume(int? textureId, double volume) async {}
 
   @override
-  Future<void> pause(int? textureId)async {
-   js.context.callMethod('pause');
-  }
+  Future<void> play(int? textureId) async {
+    final player = videojs.getPlayer(playerId(textureId));
+    // final player = videojs.getPlayer('my-player');
 
-  @override
-  Future<Duration> getPosition(int? textureId)async {
- 
-       double ? result = 
-       double.tryParse(js.context.callMethod('getPosition').toString()) ;
-
-         return Duration(seconds: (result??0).toInt());
+    player?.play();
   }
 
   @override
-  Future<DateTime?> getAbsolutePosition(int? textureId) async{
-
-     int  milliseconds = 
-       ((double.tryParse(js.context.callMethod('getTotalDuration').toString())??0) *1000).toInt();
-
-    // Sometimes the media server returns a absolute position far greater than
-    // the datetime instance can handle. This caps the value to the maximum the datetime
-    // can use.
-    if (milliseconds > 8640000000000000 || milliseconds < -8640000000000000)
-      return null;
-
-    if (milliseconds <= 0) return null;
-
-    return DateTime.fromMillisecondsSinceEpoch(milliseconds);
-
- 
+  Future<void> pause(int? textureId) async {
+    final player = videojs.getPlayer(playerId(textureId));
+    player?.pause();
   }
 
+  @override
+  Future<Duration> getPosition(int? textureId) async {
+    final player = videojs.getPlayer(playerId(textureId));
 
+    double? currentTime = player?.currentTime();
 
+    int duration = (currentTime ?? 0).toInt();
 
+    return Duration(seconds: duration.isNaN ? 0 : duration);
+  }
 
+  @override
+  Future<DateTime?> getAbsolutePosition(int? textureId) async {
+//      int  milliseconds =
+//        ((double.tryParse(js.context.callMethod('getTotalDuration').toString())??0) *1000).toInt();
+// if(milliseconds.isNaN){
+//   milliseconds =0;
+// }
+//     // Sometimes the media server returns a absolute position far greater than
+//     // the datetime instance can handle. This caps the value to the maximum the datetime
+//     // can use.
+//     if (milliseconds > 8640000000000000 || milliseconds < -8640000000000000)
+//       return null;
 
+//     if (milliseconds <= 0) return null;
 
+    return DateTime.fromMillisecondsSinceEpoch(0);
+  }
 }
