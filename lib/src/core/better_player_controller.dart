@@ -664,9 +664,9 @@ class BetterPlayerController {
   }
 
 
-bool isWebFullScreen (){
+Future<bool> isWebFullScreen ()async{
 
-  return  videoPlayerController?.isWebFullScreen()??false;
+  return await  videoPlayerController?.isWebFullScreen()??false;
 }
   ///Start video playback. Play will be triggered only if current lifecycle state
   ///is resumed.

@@ -167,17 +167,25 @@ class _BetterPlayerState extends State<BetterPlayer>
   @override
   Widget build(BuildContext context) {
     if (kIsWeb) {
-      return HtmlElementView(
-        viewType: 'video-1',
-        onPlatformViewCreated: (id) {
-          final videoOptions = {
-            "playbackRates": [ 1, 2]
-          };
-          // js.context.callMethod('initPlayer');
-          final player = videojs('player-1',(videoOptions.toJS) );
-          player.httpSourceSelector();
-          // final player = videojs('video-$id',{});
-        },
+      return AspectRatio(
+        aspectRatio: 16/9,
+        child: HtmlElementView(
+          viewType: 'video-1',
+          onPlatformViewCreated: (id) {
+            // js.context.callMethod('initPlayer');
+            final player = videojs(
+              'player-1',
+              Options(
+                  plugins: Plugins(
+                      hotkeys: Hotkeys(
+                          volumeStep: .1,
+                          seekStep: 10,
+                          enableModifiersForNumbers: false)),
+                  playbackRates: [.25, .5, .75, 1, 1.25, 1.5, 1.75, 2]),
+            );
+            player.httpSourceSelector();
+          },
+        ),
       );
     }
     return BetterPlayerControllerProvider(

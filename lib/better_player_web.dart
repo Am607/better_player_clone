@@ -33,10 +33,12 @@ class BetterPlayerPlugin extends VideoPlayerPlatform {
   @override
   Future<void> init() async {
     eventController = StreamController();
+    log('init web player-->');
   }
 
   @override
   Future<void> dispose(int? textureId) async {
+    log('dispose web player-->');
     var player = videojs.getPlayer(playerId(textureId));
 
     player?.pause();
@@ -48,7 +50,7 @@ class BetterPlayerPlugin extends VideoPlayerPlatform {
   @override
   Future<int?> create(
       {BetterPlayerBufferingConfiguration? bufferingConfiguration}) async {
-    log('create called');
+    log('create web player-->');
     int textureId = _textureCounter++;
 
     // ignore: undefined_prefixed_name
@@ -64,13 +66,11 @@ class BetterPlayerPlugin extends VideoPlayerPlatform {
             ..style.minHeight = "100%"
             ..style.width = "100%"
             ..controls = true
-            ..className = 'video-js '
-            
-           
+            ..className = 'video-js  '
         ];
       return htmlElement;
     });
-    log('texture id from reg --$textureId');
+
     return textureId;
   }
 
@@ -81,7 +81,7 @@ class BetterPlayerPlugin extends VideoPlayerPlatform {
 
   @override
   Future<void> setDataSource(int? textureId, DataSource dataSource) async {
-    ;
+    log('set data source web player-->');
     final player = videojs.getPlayer(playerId(textureId));
     player?.src(
         dataSource.uri ?? '',
@@ -96,21 +96,21 @@ class BetterPlayerPlugin extends VideoPlayerPlatform {
           duration: Duration(seconds: totalDuration(textureId))));
     }));
 
-    player?.on('play', allowInterop((a, b) async {
-      eventController.add(VideoEvent(
-        eventType: VideoEventType.play,
-        key: '',
-      ));
-    }));
-    player?.on('pause', allowInterop((a, b) async {
-      if (eventController.isClosed) {
-        return;
-      }
-      eventController.add(VideoEvent(
-        eventType: VideoEventType.pause,
-        key: '',
-      ));
-    }));
+    // player?.on('play', allowInterop((a, b) async {
+    //   eventController.add(VideoEvent(
+    //     eventType: VideoEventType.play,
+    //     key: '',
+    //   ));
+    // }));
+    // player?.on('pause', allowInterop((a, b) async {
+    //   if (eventController.isClosed) {
+    //     return;
+    //   }
+    //   eventController.add(VideoEvent(
+    //     eventType: VideoEventType.pause,
+    //     key: '',
+    //   ));
+    // }));
   }
 
   String playerId(int? textureID) {
@@ -122,7 +122,7 @@ class BetterPlayerPlugin extends VideoPlayerPlatform {
     double duration = (player?.duration() ?? 0);
     log('duration is $duration');
 
-    return duration.isNaN ? 0 : duration.toInt();
+    return (duration.isNaN || duration.isInfinite) ? 0 : duration.toInt();
   }
 
   @override
@@ -139,9 +139,9 @@ class BetterPlayerPlugin extends VideoPlayerPlatform {
   }
 
   @override
-  bool isWebFullScreen()  {
+  Future<bool> isWebFullScreen() async {
     final player = videojs.getPlayer(playerId(1));
-    return  player?.isFullscreen() ?? false;
+    return player?.isFullscreen() ?? false;
   }
 
   @override
@@ -151,8 +151,9 @@ class BetterPlayerPlugin extends VideoPlayerPlatform {
   Future<void> play(int? textureId) async {
     final player = videojs.getPlayer(playerId(textureId));
     // final player = videojs.getPlayer('my-player');
-
-    player?.play();
+    if (player?.paused() == true) {
+      player?.play();
+    }
   }
 
   @override

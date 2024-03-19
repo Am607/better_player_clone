@@ -59,7 +59,6 @@ class _WebPlayerState extends State<WebPlayer> {
 
   @override
   Widget build(BuildContext context) {
-   
     return Column(
       children: [
         Flexible(child: BetterPlayer(controller: betterPlayerController)),
@@ -67,15 +66,23 @@ class _WebPlayerState extends State<WebPlayer> {
           height: 15,
         ),
         IgnorePointer(
-          ignoring: betterPlayerController.isWebFullScreen(),
+          ignoring: false,
           child: Wrap(
             children: [
               ElevatedButton(
                   onPressed: () async {
+       
 
-                    if(betterPlayerController.isWebFullScreen()){
-                      
-                    }
+                    // betterPlayerController.isWebFullScreen().then(
+                    //   (value) {
+                    //     if (value) {
+                    //       log('play pause clicked----->');
+                    //     } else {
+                    //       log('play pause not  clicked----->');
+                    //     }
+                    //   },
+                    // );
+
                     if (betterPlayerController.isPlaying() == true) {
                       await betterPlayerController.pause();
                     } else {
@@ -85,6 +92,7 @@ class _WebPlayerState extends State<WebPlayer> {
                   child: Text('Play/pause')),
               ElevatedButton(
                   onPressed: () async {
+                    log('fullscreen Status ${betterPlayerController.isWebFullScreen()}');
                     final result =
                         await betterPlayerController.getCheckPointsCount();
                     log('check points is $result');
@@ -111,6 +119,14 @@ class _WebPlayerState extends State<WebPlayer> {
                     betterPlayerController.dispose();
                   },
                   child: Text('dispose player ')),
+              ElevatedButton(
+                  onPressed: () async {
+                    await betterPlayerController.setupDataSource(
+                        BetterPlayerDataSource.network(
+                            'https://cph-p2p-msl.akamaized.net/hls/live/2000341/test/master.m3u8',
+                            videoFormat: BetterPlayerVideoFormat.hls));
+                  },
+                  child: Text('Change Video ')),
             ],
           ),
         ),

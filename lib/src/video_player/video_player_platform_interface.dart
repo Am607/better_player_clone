@@ -62,7 +62,7 @@ abstract class VideoPlayerPlatform {
   }
 
 
-    bool isWebFullScreen() {
+    Future<bool> isWebFullScreen() {
     throw UnimplementedError('init() has not been implemented.');
   }
 

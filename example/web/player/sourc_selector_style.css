@@ -79,7 +79,7 @@ video-js.vjs-ended .vjs-big-play-button,
 }
 
 .video-js .vjs-control-bar {
-    background-color: transparent !important;
+    background-color: rgba(0, 0, 0, 0.5);
     color: #ffffff;
     font-size: 12px
 }
@@ -176,3 +176,17 @@ video-js.vjs-ended .vjs-big-play-button,
 .vjs-icon-cog {
     font-size: 1.3em;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+

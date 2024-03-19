@@ -5,7 +5,18 @@ function initPlayer() {
         console.log("init player111----->");
 
         var options = {
-            playbackRates: [0.5, 1, 1.5, 2]
+            plugins: {
+                hotkeys: {
+                  volumeStep: 0.1,
+                  seekStep: 5,
+                  enableModifiersForNumbers: false
+                },
+              },
+            playbackRates: [0.5, 1, 1.5, 2],
+            skipButtons: {
+                forward: 5
+              },
+            //   autoplay: 'muted'
         };
 
         var player = videojs('player-1', options);

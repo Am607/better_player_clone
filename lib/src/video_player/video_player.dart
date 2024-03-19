@@ -438,11 +438,12 @@ class VideoPlayerController extends ValueNotifier<VideoPlayerValue> {
   /// has been sent to the platform, not when playback itself is totally
   /// finished.
   Future<void> play() async {
+
     value = value.copyWith(isPlaying: true);
     await _applyPlayPause();
   }
 
-bool isWebFullScreen()  {
+Future<bool> isWebFullScreen() async {
     if (kIsWeb) {
       return  _videoPlayerPlatform.isWebFullScreen();
     } else {
@@ -476,6 +477,7 @@ bool isWebFullScreen()  {
     }
     _timer?.cancel();
     if (value.isPlaying) {
+      log('890video is will play ---->');
       await _videoPlayerPlatform.play(_textureId);
 
       _timer = Timer.periodic(
