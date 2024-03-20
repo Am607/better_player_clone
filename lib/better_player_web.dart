@@ -5,7 +5,7 @@ library videojs;
 
 import 'dart:async';
 import 'dart:developer';
-import 'dart:js';
+
 
 
 import 'dart:ui' as ui;
@@ -17,24 +17,24 @@ import 'package:flutter_web_plugins/flutter_web_plugins.dart';
 
 import 'src/video_player/video_player_platform_interface.dart';
 
-import 'package:js/js.dart' as js;
+import 'stub/js_stub.dart' if (dart.library.js) 'package:js/js.dart' as js;
 
 @js.JS()
-@js.anonymous
+// @js.anonymous
 class Options {
   // Must have an unnamed factory constructor with named arguments.
   external factory Options({List<double> playbackRates, Plugins plugins});
 }
 
 @js.JS()
-@js.anonymous
+// @js.anonymous
 class Plugins {
   // Must have an unnamed factory constructor with named arguments.
   external factory Plugins({Hotkeys hotkeys});
 }
 
 @js.JS()
-@js.anonymous
+// @js.anonymous
 class Hotkeys {
   // Must have an unnamed factory constructor with named arguments.
   external factory Hotkeys(
@@ -144,7 +144,7 @@ class BetterPlayerPlugin extends VideoPlayerPlatform {
             ? "application/x-mpegURL"
             : '');
 
-    player?.on('loadeddata', allowInterop((a, b) async {
+    player?.on('loadeddata', js.allowInterop((a, b) async {
       eventController.add(VideoEvent(
           eventType: VideoEventType.initialized,
           key: '',
