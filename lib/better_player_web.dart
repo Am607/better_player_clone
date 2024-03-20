@@ -8,33 +8,34 @@ import 'dart:developer';
 
 
 
-import 'dart:ui' as ui;
-import 'dart:html' as html;
-import 'package:better_player/better_player.dart';
-import 'package:better_player/web/interop.dart';
+import  'stub/ui_stub.dart' if(dart.library.js)  'dart:ui' as ui;
 
-import 'package:flutter_web_plugins/flutter_web_plugins.dart';
+import 'package:universal_html/html.dart' as html;
+import 'package:better_player/better_player.dart';
+
+
+import 'stub/plugin_stub.dart' if(dart.library.js) 'package:flutter_web_plugins/flutter_web_plugins.dart';
 
 import 'src/video_player/video_player_platform_interface.dart';
 
-import 'stub/js_stub.dart' if (dart.library.js) 'package:js/js.dart' as js;
+import 'stub/js_stub.dart'if(dart.library.js) 'package:js/js.dart' as js;
 
 @js.JS()
-// @js.anonymous
+@js.anonymous
 class Options {
   // Must have an unnamed factory constructor with named arguments.
   external factory Options({List<double> playbackRates, Plugins plugins});
 }
 
 @js.JS()
-// @js.anonymous
+@js.anonymous
 class Plugins {
   // Must have an unnamed factory constructor with named arguments.
   external factory Plugins({Hotkeys hotkeys});
 }
 
 @js.JS()
-// @js.anonymous
+@js.anonymous
 class Hotkeys {
   // Must have an unnamed factory constructor with named arguments.
   external factory Hotkeys(
