@@ -30,7 +30,26 @@ class MyApp extends StatelessWidget {
         theme: ThemeData(
           primarySwatch: Colors.green,
         ),
-        home: kIsWeb ? WebPlayer() : WelcomePage(),
+        home: kIsWeb ? WebPageMain() : WelcomePage(),
+      ),
+    );
+  }
+}
+
+class WebPageMain extends StatelessWidget {
+  const WebPageMain({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Center(
+        child: ElevatedButton(
+            onPressed: () {
+              Navigator.of(context).push(MaterialPageRoute(
+                builder: (context) => WebPlayer(),
+              ));
+            },
+            child: Text('go')),
       ),
     );
   }
@@ -48,8 +67,8 @@ class _WebPlayerState extends State<WebPlayer> {
   @override
   void initState() {
     // TODO: implement initState
-      betterPlayerController = BetterPlayerController(
-        BetterPlayerConfiguration(webSize:Size(440, 660)),
+    betterPlayerController = BetterPlayerController(
+        BetterPlayerConfiguration(webSize: Size(440, 660)),
         betterPlayerDataSource: BetterPlayerDataSource.network(
             'http://sample.vodobox.net/skate_phantom_flex_4k/skate_phantom_flex_4k.m3u8',
             videoFormat: BetterPlayerVideoFormat.hls));
@@ -58,13 +77,7 @@ class _WebPlayerState extends State<WebPlayer> {
     super.initState();
   }
 
-  @override
-  void didChangeDependencies() {
-
-
-
-    super.didChangeDependencies();
-  }
+ 
 
   @override
   Widget build(BuildContext context) {
@@ -76,13 +89,13 @@ class _WebPlayerState extends State<WebPlayer> {
             height: 660,
             width: 440,
             child: ClipRRect(
-            borderRadius: BorderRadius.circular(22),
-            child: ColoredBox(
-              color: Colors.green,
-              child: BetterPlayer(
-                controller: betterPlayerController,
-              ),
-            )),
+                borderRadius: BorderRadius.circular(22),
+                child: ColoredBox(
+                  color: Colors.green,
+                  child: BetterPlayer(
+                    controller: betterPlayerController,
+                  ),
+                )),
           ),
         ),
         SizedBox(

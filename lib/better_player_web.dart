@@ -88,8 +88,8 @@ class BetterPlayerPlugin extends VideoPlayerPlatform {
   late StreamController<VideoEvent> eventController;
   @override
   Future<void> init() async {
-    eventController = StreamController();
-    log('init web player-->');
+    // eventController = StreamController();
+    // log('init web player-->');
   }
 
   @override
@@ -108,7 +108,7 @@ class BetterPlayerPlugin extends VideoPlayerPlatform {
       {BetterPlayerBufferingConfiguration? bufferingConfiguration,
       Size? webSize}) async {
     log('create web player-->');
-    int textureId = _textureCounter++;
+    int textureId = _textureCounter;
 
     // ignore: undefined_prefixed_name
     ui.platformViewRegistry.registerViewFactory('video-$textureId', (int id) {
@@ -128,6 +128,9 @@ class BetterPlayerPlugin extends VideoPlayerPlatform {
       return htmlElement;
     });
 
+
+    eventController = StreamController();
+    log('current texture id is $textureId');
     return textureId;
   }
 

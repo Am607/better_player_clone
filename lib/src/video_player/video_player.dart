@@ -172,13 +172,13 @@ class VideoPlayerValue {
 /// After [dispose] all further calls are ignored.
 class VideoPlayerController extends ValueNotifier<VideoPlayerValue> {
   final BetterPlayerBufferingConfiguration bufferingConfiguration;
-final Size ?webSize;
+  final Size? webSize;
+
   /// Constructs a [VideoPlayerController] and creates video controller on platform side.
   VideoPlayerController({
-     this.webSize,
+    this.webSize,
     this.bufferingConfiguration = const BetterPlayerBufferingConfiguration(),
     bool autoCreate = true,
-    
   }) : super(VideoPlayerValue(duration: null)) {
     if (autoCreate) {
       _create();
@@ -206,11 +206,7 @@ final Size ?webSize;
   /// Attempts to open the given [dataSource] and load metadata about the video.
   Future<void> _create() async {
     _textureId = await _videoPlayerPlatform.create(
-      bufferingConfiguration: bufferingConfiguration,
-      webSize: webSize
-   
-      
-    );
+        bufferingConfiguration: bufferingConfiguration, webSize: webSize);
     _creatingCompleter.complete(null);
 
     unawaited(_applyLooping());
@@ -281,9 +277,11 @@ final Size ?webSize;
       }
     }
 
-    _eventSubscription = _videoPlayerPlatform
-        .videoEventsFor(_textureId)
-        .listen(eventListener, onError: errorListener);
+
+      _eventSubscription = _videoPlayerPlatform
+          .videoEventsFor(_textureId)
+          .listen(eventListener, onError: errorListener);
+    
   }
 
   /// Set data source for playing a video from an asset.
@@ -443,14 +441,13 @@ final Size ?webSize;
   /// has been sent to the platform, not when playback itself is totally
   /// finished.
   Future<void> play() async {
-
     value = value.copyWith(isPlaying: true);
     await _applyPlayPause();
   }
 
-Future<bool> isWebFullScreen() async {
+  Future<bool> isWebFullScreen() async {
     if (kIsWeb) {
-      return  _videoPlayerPlatform.isWebFullScreen();
+      return _videoPlayerPlatform.isWebFullScreen();
     } else {
       return false;
     }
