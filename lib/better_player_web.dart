@@ -6,19 +6,19 @@ library videojs;
 import 'dart:async';
 import 'dart:developer';
 
+import 'package:flutter/material.dart';
 
-
-import  'stub/ui_stub.dart' if(dart.library.js)  'dart:ui' as ui;
+import 'stub/ui_stub.dart' if (dart.library.js) 'dart:ui' as ui;
 
 import 'package:universal_html/html.dart' as html;
 import 'package:better_player/better_player.dart';
 
-
-import 'stub/plugin_stub.dart' if(dart.library.js) 'package:flutter_web_plugins/flutter_web_plugins.dart';
+import 'stub/plugin_stub.dart'
+    if (dart.library.js) 'package:flutter_web_plugins/flutter_web_plugins.dart';
 
 import 'src/video_player/video_player_platform_interface.dart';
 
-import 'stub/js_stub.dart'if(dart.library.js) 'package:js/js.dart' as js;
+import 'stub/js_stub.dart' if (dart.library.js) 'package:js/js.dart' as js;
 
 @js.JS()
 @js.anonymous
@@ -105,7 +105,8 @@ class BetterPlayerPlugin extends VideoPlayerPlatform {
 
   @override
   Future<int?> create(
-      {BetterPlayerBufferingConfiguration? bufferingConfiguration}) async {
+      {BetterPlayerBufferingConfiguration? bufferingConfiguration,
+      Size? webSize}) async {
     log('create web player-->');
     int textureId = _textureCounter++;
 
@@ -118,9 +119,9 @@ class BetterPlayerPlugin extends VideoPlayerPlatform {
         ..children = [
           html.VideoElement()
             ..id = 'player-$textureId'
-            ..style.minHeight = "100%"
-            ..style.minHeight = "100%"
-            ..style.width = "100%"
+            
+            ..height = (webSize?.height ?? 300).toInt()
+            ..width = (webSize?.width ??400).toInt()
             ..controls = true
             ..className = 'video-js  '
         ];

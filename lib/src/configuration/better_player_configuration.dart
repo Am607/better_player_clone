@@ -8,6 +8,7 @@ import 'package:flutter/services.dart';
 class BetterPlayerConfiguration {
   /// Play the video as soon as it's displayed
   final bool autoPlay;
+  final Size? webSize;
 
   /// Start video at a certain position
   final Duration? startAt;
@@ -123,6 +124,7 @@ class BetterPlayerConfiguration {
 
   const BetterPlayerConfiguration({
     this.aspectRatio,
+    this.webSize,
     this.autoPlay = false,
     this.startAt,
     this.looping = false,
@@ -163,6 +165,7 @@ class BetterPlayerConfiguration {
   });
 
   BetterPlayerConfiguration copyWith({
+    Size ?webSize,
     double? aspectRatio,
     bool? autoPlay,
     Duration? startAt,
@@ -195,6 +198,7 @@ class BetterPlayerConfiguration {
     bool? useRootNavigator,
   }) {
     return BetterPlayerConfiguration(
+      webSize: webSize??this.webSize,
       aspectRatio: aspectRatio ?? this.aspectRatio,
       autoPlay: autoPlay ?? this.autoPlay,
       startAt: startAt ?? this.startAt,

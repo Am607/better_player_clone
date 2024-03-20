@@ -172,11 +172,13 @@ class VideoPlayerValue {
 /// After [dispose] all further calls are ignored.
 class VideoPlayerController extends ValueNotifier<VideoPlayerValue> {
   final BetterPlayerBufferingConfiguration bufferingConfiguration;
-
+final Size ?webSize;
   /// Constructs a [VideoPlayerController] and creates video controller on platform side.
   VideoPlayerController({
+     this.webSize,
     this.bufferingConfiguration = const BetterPlayerBufferingConfiguration(),
     bool autoCreate = true,
+    
   }) : super(VideoPlayerValue(duration: null)) {
     if (autoCreate) {
       _create();
@@ -205,6 +207,9 @@ class VideoPlayerController extends ValueNotifier<VideoPlayerValue> {
   Future<void> _create() async {
     _textureId = await _videoPlayerPlatform.create(
       bufferingConfiguration: bufferingConfiguration,
+      webSize: webSize
+   
+      
     );
     _creatingCompleter.complete(null);
 

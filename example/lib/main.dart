@@ -48,7 +48,8 @@ class _WebPlayerState extends State<WebPlayer> {
   @override
   void initState() {
     // TODO: implement initState
-    betterPlayerController = BetterPlayerController(BetterPlayerConfiguration(),
+      betterPlayerController = BetterPlayerController(
+        BetterPlayerConfiguration(webSize:Size(440, 660)),
         betterPlayerDataSource: BetterPlayerDataSource.network(
             'http://sample.vodobox.net/skate_phantom_flex_4k/skate_phantom_flex_4k.m3u8',
             videoFormat: BetterPlayerVideoFormat.hls));
@@ -58,10 +59,32 @@ class _WebPlayerState extends State<WebPlayer> {
   }
 
   @override
+  void didChangeDependencies() {
+
+
+
+    super.didChangeDependencies();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Flexible(child: BetterPlayer(controller: betterPlayerController)),
+        ColoredBox(
+          color: Colors.green,
+          child: SizedBox(
+            height: 660,
+            width: 440,
+            child: ClipRRect(
+            borderRadius: BorderRadius.circular(22),
+            child: ColoredBox(
+              color: Colors.green,
+              child: BetterPlayer(
+                controller: betterPlayerController,
+              ),
+            )),
+          ),
+        ),
         SizedBox(
           height: 15,
         ),
@@ -71,8 +94,6 @@ class _WebPlayerState extends State<WebPlayer> {
             children: [
               ElevatedButton(
                   onPressed: () async {
-       
-
                     // betterPlayerController.isWebFullScreen().then(
                     //   (value) {
                     //     if (value) {

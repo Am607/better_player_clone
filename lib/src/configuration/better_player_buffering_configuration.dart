@@ -8,6 +8,7 @@ class BetterPlayerBufferingConfiguration {
   static const defaultBufferForPlaybackMs = 3000;
   static const defaultBufferForPlaybackAfterRebufferMs = 6000;
 
+final double ? webHeight ,webWidth;
   /// The default minimum duration of media that the player will attempt to
   /// ensure is buffered at all times, in milliseconds.
   final int minBufferMs;
@@ -25,7 +26,8 @@ class BetterPlayerBufferingConfiguration {
   /// buffer depletion rather than a user action.
   final int bufferForPlaybackAfterRebufferMs;
 
-  const BetterPlayerBufferingConfiguration({
+  const BetterPlayerBufferingConfiguration( {
+    this.webHeight, this.webWidth,
     this.minBufferMs = defaultMinBufferMs,
     this.maxBufferMs = defaultMaxBufferMs,
     this.bufferForPlaybackMs = defaultBufferForPlaybackMs,

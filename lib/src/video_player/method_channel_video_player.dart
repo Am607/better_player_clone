@@ -7,7 +7,6 @@ import 'dart:developer';
 import 'package:better_player/src/configuration/better_player_buffering_configuration.dart';
 import 'package:better_player/src/core/better_player_utils.dart';
 
-
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'video_player_platform_interface.dart';
@@ -30,9 +29,9 @@ class MethodChannelVideoPlayer extends VideoPlayerPlatform {
   }
 
   @override
-  Future<int?> create({
-    BetterPlayerBufferingConfiguration? bufferingConfiguration,
-  }) async {
+  Future<int?> create(
+      {BetterPlayerBufferingConfiguration? bufferingConfiguration,
+      Size? webSize}) async {
     late final Map<String, dynamic>? response;
     if (bufferingConfiguration == null) {
       response = await _channel.invokeMapMethod<String, dynamic>('create');
@@ -204,8 +203,6 @@ class MethodChannelVideoPlayer extends VideoPlayerPlatform {
 
   @override
   Future<Duration> getPosition(int? textureId) async {
-
-
     return Duration(
         milliseconds: await _channel.invokeMethod<int>(
               'position',
@@ -216,8 +213,6 @@ class MethodChannelVideoPlayer extends VideoPlayerPlatform {
 
   @override
   Future<DateTime?> getAbsolutePosition(int? textureId) async {
-
-
     final int milliseconds = await _channel.invokeMethod<int>(
           'absolutePosition',
           <String, dynamic>{'textureId': textureId},
@@ -338,7 +333,6 @@ class MethodChannelVideoPlayer extends VideoPlayerPlatform {
       late Map<dynamic, dynamic> map;
       if (event is Map) {
         map = event;
-
       }
       final String? eventType = map["event"] as String?;
       final String? key = map["key"] as String?;
@@ -365,8 +359,7 @@ class MethodChannelVideoPlayer extends VideoPlayerPlatform {
           return VideoEvent(
             eventType: VideoEventType.initialized,
             key: key,
-            duration:
-             Duration(milliseconds: map['duration'] as int),
+            duration: Duration(milliseconds: map['duration'] as int),
             size: size,
           );
         case 'completed':
@@ -442,7 +435,6 @@ class MethodChannelVideoPlayer extends VideoPlayerPlatform {
     //     creationParams: {'textureId': textureId!},
     //   );
     // } else {
-       
 
     return Texture(textureId: textureId!);
     // }
