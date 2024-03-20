@@ -88,6 +88,7 @@ class BetterPlayerPlugin extends VideoPlayerPlatform {
   late StreamController<VideoEvent> eventController;
   @override
   Future<void> init() async {
+     eventController = StreamController();
     // eventController = StreamController();
     // log('init web player-->');
   }
@@ -129,8 +130,8 @@ class BetterPlayerPlugin extends VideoPlayerPlatform {
     });
 
 
-    eventController = StreamController();
-    log('current texture id is $textureId');
+   
+  
     return textureId;
   }
 
@@ -156,12 +157,12 @@ class BetterPlayerPlugin extends VideoPlayerPlatform {
           duration: Duration(seconds: totalDuration(textureId))));
     }));
 
-    // player?.on('play', allowInterop((a, b) async {
-    //   eventController.add(VideoEvent(
-    //     eventType: VideoEventType.play,
-    //     key: '',
-    //   ));
-    // }));
+    player?.on('play', js.allowInterop((a, b) async {
+      eventController.add(VideoEvent(
+        eventType: VideoEventType.play,
+        key: '',
+      ));
+    }));
     // player?.on('pause', allowInterop((a, b) async {
     //   if (eventController.isClosed) {
     //     return;

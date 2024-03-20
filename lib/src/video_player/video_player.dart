@@ -474,6 +474,7 @@ class VideoPlayerController extends ValueNotifier<VideoPlayerValue> {
   }
 
   Future<void> _applyPlayPause() async {
+   
     if (!_created || _isDisposed) {
       return;
     }
@@ -490,6 +491,7 @@ class VideoPlayerController extends ValueNotifier<VideoPlayerValue> {
           }
           final Duration? newPosition = await position;
           final DateTime? newAbsolutePosition = await absolutePosition;
+
           // ignore: invariant_booleans
           if (_isDisposed) {
             return;
