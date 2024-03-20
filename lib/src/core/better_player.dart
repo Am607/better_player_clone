@@ -1,6 +1,6 @@
 import 'dart:async';
-import 'dart:convert';
-import 'dart:js_interop';
+
+
 
 import 'package:better_player/better_player.dart';
 import 'package:better_player/src/configuration/better_player_controller_event.dart';
@@ -8,7 +8,7 @@ import 'package:better_player/src/core/better_player_utils.dart';
 import 'package:better_player/src/core/better_player_with_controls.dart';
 import 'package:better_player/web/interop.dart';
 import 'package:flutter/foundation.dart';
-import 'dart:js' as js;
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:visibility_detector/visibility_detector.dart';

@@ -1,10 +1,10 @@
 // Copyright 2013 The Flutter Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
-import 'dart:js' as js;
+
 import 'dart:async';
 import 'dart:developer';
-import 'dart:js_interop';
+
 import 'dart:js_util';
 import 'dart:ui' as ui;
 import 'dart:html' as html;
