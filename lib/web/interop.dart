@@ -1,31 +1,37 @@
-@JS()
+
 library videojs;
+import 'package:js/js.dart' as js;
 
-import 'package:js/js.dart';
 
-@JS()
-@anonymous
+
+
+
+
+
+
+@js.JS()
+@js.anonymous
 class Options {
   // Must have an unnamed factory constructor with named arguments.
   external factory Options({List<double> playbackRates,Plugins plugins});
 }
 
-@JS()
-@anonymous
+@js.JS()
+@js.anonymous
 class Plugins {
   // Must have an unnamed factory constructor with named arguments.
   external factory Plugins({Hotkeys hotkeys});
 }
 
-@JS()
-@anonymous
+@js.JS()
+@js.anonymous
 class Hotkeys {
   // Must have an unnamed factory constructor with named arguments.
   external factory Hotkeys(
       {double volumeStep, int seekStep, bool enableModifiersForNumbers});
 }
 
-@JS()
+@js.JS()
 class videojs {
   external factory videojs(String id, Options options);
 
