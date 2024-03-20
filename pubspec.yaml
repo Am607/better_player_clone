@@ -55,3 +55,6 @@ flutter:
       web:
         pluginClass: BetterPlayerPlugin
         fileName: better_player_web.dart
+      
+        
+     

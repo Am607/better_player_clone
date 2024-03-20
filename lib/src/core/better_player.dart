@@ -3,6 +3,7 @@ import 'dart:async';
 
 
 import 'package:better_player/better_player.dart';
+import 'package:better_player/better_player_web.dart';
 import 'package:better_player/src/configuration/better_player_controller_event.dart';
 import 'package:better_player/src/core/better_player_utils.dart';
 import 'package:better_player/src/core/better_player_with_controls.dart';
@@ -173,17 +174,17 @@ class _BetterPlayerState extends State<BetterPlayer>
           viewType: 'video-1',
           onPlatformViewCreated: (id) {
             // js.context.callMethod('initPlayer');
-            // final player = videojs(
-            //   'player-1',
-            //   Options(
-            //       plugins: Plugins(
-            //           hotkeys: Hotkeys(
-            //               volumeStep: .1,
-            //               seekStep: 10,
-            //               enableModifiersForNumbers: false)),
-            //       playbackRates: [.25, .5, .75, 1, 1.25, 1.5, 1.75, 2]),
-            // );
-            // player.httpSourceSelector();
+            final player = videojs(
+              'player-1',
+              Options(
+                  plugins: Plugins(
+                      hotkeys: Hotkeys(
+                          volumeStep: .1,
+                          seekStep: 10,
+                          enableModifiersForNumbers: false)),
+                  playbackRates: [.25, .5, .75, 1, 1.25, 1.5, 1.75, 2]),
+            );
+            player.httpSourceSelector();
           },
         ),
       );
