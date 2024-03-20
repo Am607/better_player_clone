@@ -479,7 +479,7 @@ class VideoPlayerController extends ValueNotifier<VideoPlayerValue> {
     }
     _timer?.cancel();
     if (value.isPlaying) {
-      log('890video is will play ---->');
+
       await _videoPlayerPlatform.play(_textureId);
 
       _timer = Timer.periodic(
@@ -715,19 +715,11 @@ class _VideoPlayerState extends State<VideoPlayer> {
   Widget build(BuildContext context) {
     return _textureId == null
         ? Container(
-            color: Colors.green,
+            color: Colors.black,
             height: 300,
             width: 400,
           )
-        // : (kIsWeb)
-        //     ? HtmlElementView(
-        //         viewType: 'video-$_textureId',
-        //         onPlatformViewCreated: (id) {
-
-        //           final player = videojs('my-player', {});
-        //           // final player = videojs('video-$id',{});
-        //         },
-        //       )
+  
 
         : _videoPlayerPlatform.buildView(_textureId);
   }

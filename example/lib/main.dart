@@ -68,7 +68,9 @@ class _WebPlayerState extends State<WebPlayer> {
   void initState() {
     // TODO: implement initState
     betterPlayerController = BetterPlayerController(
-        BetterPlayerConfiguration(webSize: Size(440, 660)),
+        BetterPlayerConfiguration(
+          webSize: Size(440, 660),
+        ),
         betterPlayerDataSource: BetterPlayerDataSource.network(
             'http://sample.vodobox.net/skate_phantom_flex_4k/skate_phantom_flex_4k.m3u8',
             videoFormat: BetterPlayerVideoFormat.hls));
@@ -76,8 +78,6 @@ class _WebPlayerState extends State<WebPlayer> {
     // betterPlayerController.setupDataSource(BetterPlayerDataSource.network('http://sample.vodobox.net/skate_phantom_flex_4k/skate_phantom_flex_4k.m3u8'));
     super.initState();
   }
-
- 
 
   @override
   Widget build(BuildContext context) {

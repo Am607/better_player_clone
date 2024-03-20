@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:developer';
 
 
 
@@ -17,8 +18,8 @@ import 'package:wakelock_plus/wakelock_plus.dart';
 
 ///Widget which uses provided controller to render video player.
 class BetterPlayer extends StatefulWidget {
-  final Size ? webSize;
-  const BetterPlayer({Key? key, required this.controller, this.webSize}) : super(key: key);
+
+  const BetterPlayer({Key? key, required this.controller}) : super(key: key);
 
   factory BetterPlayer.network(
     String url, {
@@ -77,6 +78,9 @@ class _BetterPlayerState extends State<BetterPlayer>
 
   @override
   void didChangeDependencies() {
+
+
+
     if (!_initialized) {
       final navigator = Navigator.of(context);
       setState(() {
@@ -169,6 +173,7 @@ class _BetterPlayerState extends State<BetterPlayer>
 
   @override
   Widget build(BuildContext context) {
+
     if (kIsWeb) {
       return AspectRatio(
         aspectRatio: 16/9,
