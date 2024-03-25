@@ -86,62 +86,77 @@ class _BetterPlayerCupertinoControlsState
     final isFullScreen = _betterPlayerController?.isFullScreen == true;
 
     _wasLoading = isLoading(_latestValue);
-    final controlsColumn = Stack(
+    final controlsColumn = Column(
       children: [
-        if (!controlsNotVisible) //!controller visible
-          AnimatedContainer(
-            width: double.infinity,
-            height: double.infinity,
-            duration: const Duration(milliseconds: 300),
-            decoration: BoxDecoration(
-              color: Colors.black.withOpacity(.4),
-            ),
-          )
-        else
-          SizedBox(),
-        SafeArea(
-          child: Column(
-            // mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            mainAxisSize: MainAxisSize.max,
-            // crossAxisAlignment: CrossAxisAlignment.end,
-            children: <Widget>[
-              _buildTopBar(
-                backgroundColor,
-                iconColor,
-                barHeight,
-                buttonPadding,
-              ),
-              Spacer(),
+        Flexible(
+          child: Stack(
+            children: [
+              if (!controlsNotVisible) //!controller visible
+                AnimatedContainer(
+                  width: double.infinity,
+                  height: double.infinity,
+                  duration: const Duration(milliseconds: 300),
+                  decoration: BoxDecoration(
+                    color: Colors.black.withOpacity(.4),
+                  ),
+                )
+              else
+                SizedBox(),
+              SafeArea(
+                top: false,
+                bottom: false,
+                child: Container(
+                  // color: Colors.blue,
+                  child: Column(
+                    // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    mainAxisSize: MainAxisSize.max,
+                    // crossAxisAlignment: CrossAxisAlignment.end,
+                    children: <Widget>[
+                      Container(
+                        // color: Colors.red,
+                        child: _buildTopBar(
+                          backgroundColor,
+                          iconColor,
+                          barHeight,
+                          buttonPadding,
+                        ),
+                      ),
+                      Spacer(),
 
-              // _buildNextVideoWidget(),
-              // Spacer(),
-              _buildBottomBar(
-                backgroundColor,
-                iconColor,
-                barHeight,
+                      // _buildNextVideoWidget(),
+                      // Spacer(),
+                      _buildBottomBar(
+                        backgroundColor,
+                        iconColor,
+                        barHeight,
+                      ),
+                    ],
+                  ),
+                ),
               ),
+              if (_wasLoading)
+                Positioned(
+                    top: 0,
+                    bottom: 0,
+                    left: 0,
+                    right: 0,
+                    child: Center(child: _buildLoadingWidget()))
+              else
+                Positioned(
+                  top: 0,
+                  bottom: 0,
+                  left: 0,
+                  right: 0,
+                  child: Container(
+                    // color: Colors.red,
+                    child: Visibility(
+                        visible: (!controlsNotVisible),
+                        child: _buildCenterWidget()),
+                  ),
+                ),
             ],
           ),
         ),
-        if (_wasLoading)
-          Positioned(
-              top: 0,
-              bottom: 0,
-              left: 0,
-              right: 0,
-              child: Center(child: _buildLoadingWidget()))
-        else
-          Positioned(
-            top: 0,
-            bottom: 0,
-            left: 0,
-            right: 0,
-            child: Container(
-              // color: Colors.red,
-              child: Visibility(
-                  visible: (!controlsNotVisible), child: _buildCenterWidget()),
-            ),
-          ),
       ],
     );
     return GestureDetector(
@@ -484,6 +499,7 @@ class _BetterPlayerCupertinoControlsState
         duration: _controlsConfiguration.controlsHideTime,
         child: Padding(
           padding: EdgeInsets.fromLTRB(10, 10, 5, 10),
+          // padding: EdgeInsets.zero,
           child: ClipRRect(
             borderRadius: BorderRadius.circular(10.0),
             child: Row(
@@ -633,7 +649,7 @@ class _BetterPlayerCupertinoControlsState
     final barHeight = topBarHeight * 0.8;
     final iconSize = topBarHeight * 0.4;
     return Container(
-      height: barHeight,
+      // height: barHeight,
       margin: EdgeInsets.only(
         top: marginSize,
         right: marginSize,

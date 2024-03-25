@@ -64,21 +64,21 @@ class _BasicPlayerPageState extends State<BasicPlayerPage> {
             SizedBox(
               height: 20,
             ),
-            AnimatedContainer(
-              width: double.infinity,
-              height: 350,
-              duration: const Duration(milliseconds: 300),
-              // color: _controller.value.isControlsVisible ? Colors.black.withAlpha(150) : Colors.transparent,
-              // color: Colors.black.withAlpha(120)
-              decoration: BoxDecoration(
-                gradient: LinearGradient(colors: [
-                  Color(0xff000000),
-                  Color(0xff000000).withOpacity(0),
-                  Color(0xff000000),
-                ], begin: Alignment.topCenter, end: Alignment.bottomCenter),
-              ),
-              // color: Colors.red,
-            ),
+            // AnimatedContainer(
+            //   width: double.infinity,
+            //   height: 350,
+            //   duration: const Duration(milliseconds: 300),
+            //   // color: _controller.value.isControlsVisible ? Colors.black.withAlpha(150) : Colors.transparent,
+            //   // color: Colors.black.withAlpha(120)
+            //   decoration: BoxDecoration(
+            //     gradient: LinearGradient(colors: [
+            //       Color(0xff000000),
+            //       Color(0xff000000).withOpacity(0),
+            //       Color(0xff000000),
+            //     ], begin: Alignment.topCenter, end: Alignment.bottomCenter),
+            //   ),
+            //   // color: Colors.red,
+            // ),
           ],
         ),
       ),
