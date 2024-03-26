@@ -74,6 +74,8 @@ class _BetterPlayerCupertinoControlsState
       );
     }
 
+    final size = MediaQuery.of(context).size;
+
     _betterPlayerController = BetterPlayerController.of(context);
     _controller = _betterPlayerController!.videoPlayerController;
     final backgroundColor = _controlsConfiguration.controlBarColor;
@@ -102,45 +104,71 @@ class _BetterPlayerCupertinoControlsState
                 )
               else
                 SizedBox(),
-              SafeArea(
-                top: false,
-                bottom: false,
-                child: Container(
-                  // color: Colors.blue,
-                  child: Column(
-                    // mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    mainAxisSize: MainAxisSize.max,
-                    // crossAxisAlignment: CrossAxisAlignment.end,
-                    children: <Widget>[
-                      Container(
-                        // color: Colors.red,
-                        child: _buildTopBar(
-                          backgroundColor,
-                          iconColor,
-                          barHeight,
-                          buttonPadding,
-                        ),
-                      ),
-                      Spacer(),
+              // SafeArea(
+              //   top: false,
+              //   bottom: false,
+              //   child: Container(
+              //     // color: Colors.blue,
+              //     child: Column(
+              //       // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              //       mainAxisSize: MainAxisSize.min,
+              //       // crossAxisAlignment: CrossAxisAlignment.end,
+              //       children: <Widget>[
+              //         Container(
+              //           // color: Colors.red,
+              //           child: _buildTopBar(
+              //             backgroundColor,
+              //             iconColor,
+              //             barHeight,
+              //             buttonPadding,
+              //           ),
+              //         ),
+              //         Spacer(),
 
-                      // _buildNextVideoWidget(),
-                      // Spacer(),
-                      _buildBottomBar(
-                        backgroundColor,
-                        iconColor,
-                        barHeight,
-                      ),
-                    ],
+              //         // _buildNextVideoWidget(),
+              //         // Spacer(),
+              //         _buildBottomBar(
+              //           backgroundColor,
+              //           iconColor,
+              //           barHeight,
+              //         ),
+              //       ],
+              //     ),
+              //   ),
+              // ),
+              Positioned(
+                top: 10,
+                child: SizedBox(
+                  width: 800,
+                  child: _buildTopBar(
+                    backgroundColor,
+                    iconColor,
+                    barHeight,
+                    buttonPadding,
+                  ),
+                ),
+              ),
+              Positioned(
+                bottom: 10,
+                child: SizedBox(
+                  width: size.width,
+                  child: _buildBottomBar(
+                    backgroundColor,
+                    iconColor,
+                    barHeight,
                   ),
                 ),
               ),
               if (_wasLoading)
                 Positioned(
-                    top: 0,
-                    bottom: 0,
-                    left: 0,
-                    right: 0,
-                    child: Center(child: _buildLoadingWidget()))
+                  top: 0,
+                  bottom: 0,
+                  left: 0,
+                  right: 0,
+                  child: Center(
+                    child: _buildLoadingWidget(),
+                  ),
+                )
               else
                 Positioned(
                   top: 0,
@@ -181,8 +209,10 @@ class _BetterPlayerCupertinoControlsState
         }
       },
       child: AbsorbPointer(
-          absorbing: controlsNotVisible,
-          child: isFullScreen ? controlsColumn : controlsColumn),
+        absorbing: controlsNotVisible,
+        child: isFullScreen ? SafeArea(child: controlsColumn) : controlsColumn,
+        // child: _buildFullScreenToogle(),
+      ),
     );
   }
 
@@ -253,77 +283,78 @@ class _BetterPlayerCupertinoControlsState
       opacity: controlsNotVisible ? 0.0 : 1.0,
       duration: _controlsConfiguration.controlsHideTime,
       onEnd: _onPlayerHide,
-      child: _betterPlayerController!.isLiveStream()
-          ? Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                const SizedBox(width: 8),
-                if (_controlsConfiguration.enablePlayPause)
-                  _buildPlayPause(
-                    _controller!,
-                  )
-                else
-                  const SizedBox(),
-                const SizedBox(width: 8),
-                _buildLiveWidget(),
-              ],
-            )
-          : Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.center,
+      // child: _betterPlayerController!.isLiveStream()
+      //     ? Row(
+      //         mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      //         children: <Widget>[
+      //           const SizedBox(width: 8),
+      //           if (_controlsConfiguration.enablePlayPause)
+      //             _buildPlayPause(
+      //               _controller!,
+      //             )
+      //           else
+      //             const SizedBox(),
+      //           const SizedBox(width: 8),
+      //           _buildLiveWidget(),
+      //         ],
+      //       )
+      //     :
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisSize: MainAxisSize.min,
+            // mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              SizedBox(width: 10),
+              if (_controlsConfiguration.enableProgressText)
+                _buildPosition()
+              else
+                const SizedBox(),
+              if (_controlsConfiguration.enableProgressBar)
+                _buildProgressBar()
+              else
+                const SizedBox(),
+              if (_controlsConfiguration.enableProgressText)
+                _buildRemaining()
+              else
+                const SizedBox(),
+              _buildFullScreenToogle(),
+              SizedBox(width: 10),
+            ],
+          ),
+          Visibility(
+            visible: (_betterPlayerController?.isFullScreen ?? false),
+            // visible: true,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
               mainAxisSize: MainAxisSize.min,
               children: [
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisSize: MainAxisSize.min,
-                  // mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    SizedBox(width: 10),
-                    if (_controlsConfiguration.enableProgressText)
-                      _buildPosition()
-                    else
-                      const SizedBox(),
-                    if (_controlsConfiguration.enableProgressBar)
-                      _buildProgressBar()
-                    else
-                      const SizedBox(),
-                    if (_controlsConfiguration.enableProgressText)
-                      _buildRemaining()
-                    else
-                      const SizedBox(),
-                    _buildFullScreenToogle(),
-                    SizedBox(width: 10),
-                  ],
+                Visibility(
+                  visible:
+                      (_betterPlayerController?.isFullScreen ?? false),
+                  child: _buildSpeedChangeButton(
+                    _controller,
+                  ),
+                ),
+                const SizedBox(
+                  width: 20,
                 ),
                 Visibility(
-                  // visible: (_betterPlayerController?.isFullScreen ?? false),
-                  visible: true,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Visibility(
-                        visible:
-                            (_betterPlayerController?.isFullScreen ?? false),
-                        child: _buildSpeedChangeButton(
-                          _controller,
-                        ),
-                      ),
-                      const SizedBox(
-                        width: 20,
-                      ),
-                      Visibility(
-                        visible:
-                            (_betterPlayerController?.isFullScreen ?? false),
-                        child: _buildQualityChangeButton(
-                          _controller,
-                        ),
-                      ),
-                    ],
+                  visible:
+                      (_betterPlayerController?.isFullScreen ?? false),
+                  child: _buildQualityChangeButton(
+                    _controller,
                   ),
-                )
+                ),
               ],
             ),
+          )
+        ],
+      ),
     );
   }
 
@@ -403,6 +434,7 @@ class _BetterPlayerCupertinoControlsState
                 ? PlayerImages.exitFullScreen
                 : PlayerImages.fullScreen,
             width: 24,
+            color: Colors.blue,
             height: 24,
             fit: BoxFit.scaleDown,
           )),
