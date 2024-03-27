@@ -75,6 +75,10 @@ class BetterPlayerControlsConfiguration {
   ///Time to hide controls
   final Duration controlsHideTime;
 
+
+  /// Show Player back button on portrait
+  final bool showPlayerBackButton ;
+
   ///Parameter used to build custom controls
   final Widget Function(BetterPlayerController controller, Function(bool) onPlayerVisibilityChanged)?
       customControlsBuilder;
@@ -183,6 +187,7 @@ class BetterPlayerControlsConfiguration {
     this.enableProgressBarDrag = true,
     this.enablePlayPause = true,
     this.enableSkips = true,
+    this.showPlayerBackButton = true,
     this.enableAudioTracks = true,
     this.progressBarPlayedColor = Colors.white,
     this.progressBarHandleColor = Colors.white,

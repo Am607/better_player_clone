@@ -61,8 +61,6 @@ class _BetterPlayerCupertinoControlsState
 
   @override
   Widget build(BuildContext context) {
-
-
     return buildLTRDirectionality(_buildMainWidget());
   }
 
@@ -80,8 +78,7 @@ class _BetterPlayerCupertinoControlsState
     final size = MediaQuery.of(context).size;
 
     _betterPlayerController = BetterPlayerController.of(context);
-    _controller =
-     _betterPlayerController!.videoPlayerController;
+    _controller = _betterPlayerController!.videoPlayerController;
     final backgroundColor = _controlsConfiguration.controlBarColor;
     final iconColor = _controlsConfiguration.iconsColor;
     final orientation = MediaQuery.of(context).orientation;
@@ -141,9 +138,9 @@ class _BetterPlayerCupertinoControlsState
               //   ),
               // ),
               Positioned(
-                top: 10,
+                top: 1,
                 child: SizedBox(
-                  width: 800,
+                  width: size.width,
                   child: _buildTopBar(
                     backgroundColor,
                     iconColor,
@@ -338,8 +335,7 @@ class _BetterPlayerCupertinoControlsState
               mainAxisSize: MainAxisSize.min,
               children: [
                 Visibility(
-                  visible:
-                      (_betterPlayerController?.isFullScreen ?? false),
+                  visible: (_betterPlayerController?.isFullScreen ?? false),
                   child: _buildSpeedChangeButton(
                     _controller,
                   ),
@@ -348,8 +344,7 @@ class _BetterPlayerCupertinoControlsState
                   width: 20,
                 ),
                 Visibility(
-                  visible:
-                      (_betterPlayerController?.isFullScreen ?? false),
+                  visible: (_betterPlayerController?.isFullScreen ?? false),
                   child: _buildQualityChangeButton(
                     _controller,
                   ),
@@ -373,7 +368,7 @@ class _BetterPlayerCupertinoControlsState
     );
   }
 
-  GestureDetector _buildExpandButton(
+  GestureDetector _buildBackButton(
     Color backgroundColor,
     Color iconColor,
     double barHeight,
@@ -438,7 +433,6 @@ class _BetterPlayerCupertinoControlsState
                 ? PlayerImages.exitFullScreen
                 : PlayerImages.fullScreen,
             width: 24,
-            color: Colors.blue,
             height: 24,
             fit: BoxFit.scaleDown,
           )),
@@ -693,8 +687,9 @@ class _BetterPlayerCupertinoControlsState
       ),
       child: Row(
         children: <Widget>[
-          if (_controlsConfiguration.enableFullscreen)
-            _buildExpandButton(
+          if (_controlsConfiguration.showPlayerBackButton ||
+              _betterPlayerController?.isFullScreen == true)
+            _buildBackButton(
               backgroundColor,
               iconColor,
               barHeight,

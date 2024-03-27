@@ -1,6 +1,4 @@
 import 'package:better_player/better_player.dart';
-import 'package:better_player_example/constants.dart';
-import 'package:better_player_example/utils.dart';
 import 'package:flutter/material.dart';
 
 class BasicPlayerPage extends StatefulWidget {
@@ -23,8 +21,9 @@ class _BasicPlayerPageState extends State<BasicPlayerPage> {
 
     _controller = BetterPlayerController(
         BetterPlayerConfiguration(
-          autoPlay: true,
-        ),
+            autoPlay: true,
+            controlsConfiguration:
+                BetterPlayerControlsConfiguration(showPlayerBackButton: false)),
         betterPlayerDataSource: _betterPlayerDataSource);
     super.initState();
   }

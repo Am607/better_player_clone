@@ -47,10 +47,13 @@ class SchemeData {
   }
 
   @override
+  // ignore: sdk_version_since
   int get hashCode => Object.hash(
       /*uuid, */
       licenseServerUrl,
       mimeType,
+      // ignore: sdk_version_since
       data,
+      // ignore: sdk_version_since
       requiresSecureDecryption);
 }
