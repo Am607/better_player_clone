@@ -13,6 +13,7 @@ class MyApp extends StatelessWidget {
         LogicalKeySet(LogicalKeyboardKey.select): const ActivateIntent(),
       },
       child: MaterialApp(
+        debugShowCheckedModeBanner: false,
         title: 'Better player demo',
         localizationsDelegates: [
           GlobalMaterialLocalizations.delegate,

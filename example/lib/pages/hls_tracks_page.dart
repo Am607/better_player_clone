@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:better_player/better_player.dart';
 import 'package:better_player_example/constants.dart';
 import 'package:flutter/material.dart';
@@ -24,7 +26,18 @@ class _HlsTracksPageState extends State<HlsTracksPage> {
     );
     _betterPlayerController = BetterPlayerController(betterPlayerConfiguration);
     _betterPlayerController.setupDataSource(dataSource);
+
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+
+    log('9048 crossed checkpoints ---> ${_betterPlayerController.getCheckPointsCount()}');
+    _betterPlayerController.dispose();
+
+    super.dispose();
   }
 
   @override
@@ -44,9 +57,11 @@ class _HlsTracksPageState extends State<HlsTracksPage> {
               style: TextStyle(fontSize: 16),
             ),
           ),
-          AspectRatio(
-            aspectRatio: 16 / 9,
-            child: BetterPlayer(controller: _betterPlayerController),
+          Flexible(
+            child: AspectRatio(
+              aspectRatio: 16 / 9,
+              child: BetterPlayer(controller: _betterPlayerController),
+            ),
           ),
         ],
       ),
